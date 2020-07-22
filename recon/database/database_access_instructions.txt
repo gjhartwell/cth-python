@@ -1,0 +1,13 @@
+A good database browser for access the v3fit_reconstruction_database.db 
+can be found at https://sqlitebrowser.org/
+
+Only use the DB Browser for looking at information. 
+Please do not save anything from DB Browser.
+
+If you wish to access the database programmatically, the SQLite is a
+straight forward database language to learn.
+
+Good tutorials are found at:  http://www.sqlitetutorial.net/
+Python scripts already written (may or may not be what you need) are found at: 
+	Windows: Z:\Python\recon\scripts\v3fit_database.py
+	Linux: /home/cth/cthgroup/Python/recon/scripts/v3fit_database.py

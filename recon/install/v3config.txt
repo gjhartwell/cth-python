@@ -1,0 +1,4 @@
+working_directory=~/reconstructions/
+vmec_template=/home/cth/cthgroup/Python/recon/input_example/input.example.vmec
+v3fit_template=/home/cth/cthgroup/Python/recon/input_example/input.example.v3fit
+v3fit_executable=xv3fit_kring

@@ -1,0 +1,541 @@
+&v3fit_main_nli
+vmec_nli_filename = 'input.20032704_1.65_62.vmec',
+
+! Reconstruction Controls
+my_task = 'reconstruct_a1',
+nrstep = 20,
+dg2_stop = 0.5,
+cut_svd = 2.0E-5,
+cut_eff = 1.0E-4,
+cut_marg_eff = 0.0,
+cut_delta_a = 0.0,
+cut_dg2 = 0.0,
+astep_max = 100.0,
+step_type = 'lm',
+
+! Model Specification
+
+! Electron Density
+
+! Warning Spline Model Unknown
+
+! Add model discprion to:
+
+! Reconstruction Batch Runner.vi
+pp_ne_as = 0.0, 0.6, 1.0, 1.5, 
+pp_ne_af = 1.0, 0.4, 0.0, 0.0, 
+ne_pp_unit = 1.0E18,
+pp_ne_ptype = 'line_segment',
+pp_ne_b = 
+ne_min = 0.0,
+
+! SXR Emissity Profiles
+num_sxrem_p = 2,
+
+! SXR Emissivity
+model_sxrem_type_a(1) = 'pp_sxrem',
+
+! Warning Spline Model Unknown
+
+! Add model discprion to:
+
+! Reconstruction Batch Runner.vi
+pp_sxrem_as_a(1,:) = 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 
+pp_sxrem_af_a(1,:) = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+pp_sxrem_ptype_a(1) = 'line_segment',
+pp_sxrem_b_a(1,:) = 
+
+! SXR Emissivity
+model_sxrem_type_a(2) = 'pp_sxrem',
+
+! Warning Spline Model Unknown
+
+! Add model discprion to:
+
+! Reconstruction Batch Runner.vi
+pp_sxrem_as_a(2,:) = 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 
+pp_sxrem_af_a(2,:) = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+pp_sxrem_ptype_a(2) = 'line_segment',
+pp_sxrem_b_a(2,:) = 
+
+! Derived Parameters
+n_dp = 15,
+dp_type(1) = 'iotaf',
+dp_index(1,:) = 1, 
+dp_type(2) = 'iotaf',
+dp_index(2,:) = 2, 
+dp_type(3) = 'iotaf',
+dp_index(3,:) = 3, 
+dp_type(4) = 'iotaf',
+dp_index(4,:) = 4, 
+dp_type(5) = 'iotaf',
+dp_index(5,:) = 5, 
+dp_type(6) = 'iotaf',
+dp_index(6,:) = 6, 
+dp_type(7) = 'iotaf',
+dp_index(7,:) = 7, 
+dp_type(8) = 'iotaf',
+dp_index(8,:) = 8, 
+dp_type(9) = 'iotaf',
+dp_index(9,:) = 9, 
+dp_type(10) = 'iotaf',
+dp_index(10,:) = 10, 
+dp_type(11) = 'iotaf',
+dp_index(11,:) = 11, 
+dp_type(12) = 'iotaf',
+dp_index(12,:) = 12, 
+dp_type(13) = 'iotaf',
+dp_index(13,:) = 13, 
+dp_type(14) = 'iotaf',
+dp_index(14,:) = 14, 
+dp_type(15) = 'iotaf',
+dp_index(15,:) = 15, 
+
+! Reconstruction Parameters
+n_rp = 27,
+
+rp_type(1) = 'phiedge',
+rp_vrnc(1) = 5.0E-4,
+rp_index(1) = 0,
+rp_index2(1) = 0,
+rp_range_type(1,:) =
+rp_range_value(1,:) = 
+rp_range_index(1,1,:) = 
+rp_range_index(1,2,:) = 
+
+rp_type(2) = 'pp_sxrem_af_a',
+rp_vrnc(2) = 0.05,
+rp_index(2) = 1,
+rp_index2(2) = 1,
+rp_range_type(2,:) = 'value',
+rp_range_value(2,:) = 0.0, 
+rp_range_index(2,1,:) = 
+rp_range_index(2,2,:) = 
+
+rp_type(3) = 'pp_sxrem_af_a',
+rp_vrnc(3) = 0.05,
+rp_index(3) = 1,
+rp_index2(3) = 2,
+rp_range_type(3,:) = 'value',
+rp_range_value(3,:) = 0.0, 
+rp_range_index(3,1,:) = 0, 
+rp_range_index(3,2,:) = 
+
+rp_type(4) = 'pp_sxrem_af_a',
+rp_vrnc(4) = 0.05,
+rp_index(4) = 1,
+rp_index2(4) = 3,
+rp_range_type(4,:) = 'value',
+rp_range_value(4,:) = 0.0, 
+rp_range_index(4,1,:) = 
+rp_range_index(4,2,:) = 
+
+rp_type(5) = 'pp_sxrem_af_a',
+rp_vrnc(5) = 0.05,
+rp_index(5) = 1,
+rp_index2(5) = 4,
+rp_range_type(5,:) = 'value',
+rp_range_value(5,:) = 0.0, 
+rp_range_index(5,1,:) = 
+rp_range_index(5,2,:) = 
+
+rp_type(6) = 'pp_sxrem_af_a',
+rp_vrnc(6) = 0.05,
+rp_index(6) = 1,
+rp_index2(6) = 5,
+rp_range_type(6,:) = 'value',
+rp_range_value(6,:) = 0.0, 
+rp_range_index(6,1,:) = 
+rp_range_index(6,2,:) = 
+
+rp_type(7) = 'pp_sxrem_af_a',
+rp_vrnc(7) = 0.05,
+rp_index(7) = 1,
+rp_index2(7) = 6,
+rp_range_type(7,:) = 'value',
+rp_range_value(7,:) = 0.0, 
+rp_range_index(7,1,:) = 
+rp_range_index(7,2,:) = 
+
+rp_type(8) = 'pp_sxrem_af_a',
+rp_vrnc(8) = 0.05,
+rp_index(8) = 1,
+rp_index2(8) = 7,
+rp_range_type(8,:) = 'value',
+rp_range_value(8,:) = 0.0, 
+rp_range_index(8,1,:) = 
+rp_range_index(8,2,:) = 
+
+rp_type(9) = 'pp_sxrem_af_a',
+rp_vrnc(9) = 0.05,
+rp_index(9) = 1,
+rp_index2(9) = 8,
+rp_range_type(9,:) = 'value',
+rp_range_value(9,:) = 0.0, 
+rp_range_index(9,1,:) = 
+rp_range_index(9,2,:) = 
+
+rp_type(10) = 'pp_sxrem_af_a',
+rp_vrnc(10) = 0.05,
+rp_index(10) = 1,
+rp_index2(10) = 9,
+rp_range_type(10,:) = 'value',
+rp_range_value(10,:) = 0.0, 
+rp_range_index(10,1,:) = 
+rp_range_index(10,2,:) = 
+
+rp_type(11) = 'pp_sxrem_af_a',
+rp_vrnc(11) = 0.05,
+rp_index(11) = 1,
+rp_index2(11) = 10,
+rp_range_type(11,:) = 'value',
+rp_range_value(11,:) = 0.0, 
+rp_range_index(11,1,:) = 
+rp_range_index(11,2,:) = 
+
+rp_type(12) = 'pp_sxrem_af_a',
+rp_vrnc(12) = 0.01,
+rp_index(12) = 2,
+rp_index2(12) = 1,
+rp_range_type(12,:) = 'value',
+rp_range_value(12,:) = 0.0, 
+rp_range_index(12,1,:) = 
+rp_range_index(12,2,:) = 
+
+rp_type(13) = 'pp_sxrem_af_a',
+rp_vrnc(13) = 0.01,
+rp_index(13) = 2,
+rp_index2(13) = 2,
+rp_range_type(13,:) = 'value',
+rp_range_value(13,:) = 0.0, 
+rp_range_index(13,1,:) = 
+rp_range_index(13,2,:) = 
+
+rp_type(14) = 'pp_sxrem_af_a',
+rp_vrnc(14) = 0.01,
+rp_index(14) = 2,
+rp_index2(14) = 3,
+rp_range_type(14,:) = 'value',
+rp_range_value(14,:) = 0.0, 
+rp_range_index(14,1,:) = 
+rp_range_index(14,2,:) = 
+
+rp_type(15) = 'pp_sxrem_af_a',
+rp_vrnc(15) = 0.01,
+rp_index(15) = 2,
+rp_index2(15) = 4,
+rp_range_type(15,:) = 'value',
+rp_range_value(15,:) = 0.0, 
+rp_range_index(15,1,:) = 
+rp_range_index(15,2,:) = 
+
+rp_type(16) = 'pp_sxrem_af_a',
+rp_vrnc(16) = 0.01,
+rp_index(16) = 2,
+rp_index2(16) = 5,
+rp_range_type(16,:) = 'value',
+rp_range_value(16,:) = 0.0, 
+rp_range_index(16,1,:) = 
+rp_range_index(16,2,:) = 
+
+rp_type(17) = 'pp_sxrem_af_a',
+rp_vrnc(17) = 0.01,
+rp_index(17) = 2,
+rp_index2(17) = 6,
+rp_range_type(17,:) = 'value',
+rp_range_value(17,:) = 0.0, 
+rp_range_index(17,1,:) = 
+rp_range_index(17,2,:) = 
+
+rp_type(18) = 'pp_sxrem_af_a',
+rp_vrnc(18) = 0.01,
+rp_index(18) = 2,
+rp_index2(18) = 7,
+rp_range_type(18,:) = 'value',
+rp_range_value(18,:) = 0.0, 
+rp_range_index(18,1,:) = 
+rp_range_index(18,2,:) = 
+
+rp_type(19) = 'pp_sxrem_af_a',
+rp_vrnc(19) = 0.01,
+rp_index(19) = 2,
+rp_index2(19) = 8,
+rp_range_type(19,:) = 'value',
+rp_range_value(19,:) = 0.0, 
+rp_range_index(19,1,:) = 
+rp_range_index(19,2,:) = 
+
+rp_type(20) = 'pp_sxrem_af_a',
+rp_vrnc(20) = 0.01,
+rp_index(20) = 2,
+rp_index2(20) = 9,
+rp_range_type(20,:) = 'value',
+rp_range_value(20,:) = 0.0, 
+rp_range_index(20,1,:) = 
+rp_range_index(20,2,:) = 
+
+rp_type(21) = 'pp_sxrem_af_a',
+rp_vrnc(21) = 0.01,
+rp_index(21) = 2,
+rp_index2(21) = 10,
+rp_range_type(21,:) = 'value',
+rp_range_value(21,:) = 0.0, 
+rp_range_index(21,1,:) = 
+rp_range_index(21,2,:) = 
+
+rp_type(22) = 'ac',
+rp_vrnc(22) = 0.05,
+rp_index(22) = 1,
+rp_index2(22) = 0,
+rp_range_type(22,:) = 'value',
+rp_range_value(22,:) = 0.0, 
+rp_range_index(22,1,:) = 
+rp_range_index(22,2,:) = 
+ 
+rp_type(23) = 'z_offset',
+rp_vrnc(23) = 0.001,
+rp_index(23) = 0,
+rp_index2(23) = 0,
+rp_range_type(23,:) = 'value',
+rp_range_value(23,:) = 
+rp_range_index(23,1,:) = 
+rp_range_index(23,2,:) =
+ 
+rp_type(24) = 'pp_ne_af',
+rp_vrnc(24) = 0.1,
+rp_index(24) = 1,
+rp_index2(24) = 0,
+rp_range_type(24,:) = 'value',
+rp_range_value(24,:) = 
+rp_range_index(24,1,:) = 
+rp_range_index(24,2,:) = 
+
+rp_type(25) = 'pp_ne_af',
+rp_vrnc(25) = 0.1,
+rp_index(25) = 2,
+rp_index2(25) = 0,
+rp_range_type(25,:) = 'value',
+rp_range_value(25,:) = 
+rp_range_index(25,1,:) = 
+rp_range_index(25,2,:) = 
+
+rp_type(26) = 'pres_scale',
+rp_vrnc(26) = 1.0,
+rp_index(26) = 0,
+rp_index2(26) = 0,
+rp_range_type(26,:) = 'value',
+rp_range_value(26,:) = 
+rp_range_index(26,1,:) = 
+rp_range_index(26,2,:) = 
+
+rp_type(27) = 'am',
+rp_vrnc(27) = 0.05,
+rp_index(27) = 1,
+rp_index2(27) = 0,
+rp_range_type(27,:) = 'value',
+rp_range_value(27,:) = 
+rp_range_index(27,1,:) = 
+rp_range_index(27,2,:) = 
+
+! Reconstruction Signals
+
+! Magnetic Diagnostics
+sdo_w_spec_imin(1) = 29,
+sdo_w_spec_imax(1) = 37,
+sdo_w_spec_weight(1) = 0.0,
+sdo_w_spec_imin(2) = 46,
+sdo_w_spec_imax(2) = 46,
+sdo_w_spec_weight(2) = 0.0,
+sdo_w_spec_imin(3) = 58,
+sdo_w_spec_imax(3) = 58,
+sdo_w_spec_weight(3) = 0.0,
+sdo_w_spec_imin(4) = 8,
+sdo_w_spec_imax(4) = 8,
+sdo_w_spec_weight(4) = 0.0,
+sdo_s_spec_imin(1) = 1,
+sdo_s_spec_imax(1) = 29,
+sdo_s_spec_floor(1) = 0.002,
+sdo_s_spec_fraction(1) = 0.05,
+sdo_s_spec_imin(2) = 30,
+sdo_s_spec_imax(2) = 37,
+sdo_s_spec_floor(2) = 0.004,
+sdo_s_spec_fraction(2) = 0.15,
+sdo_s_spec_imin(3) = 38,
+sdo_s_spec_imax(3) = 38,
+sdo_s_spec_floor(3) = 1.0E-5,
+sdo_s_spec_fraction(3) = 0.008,
+sdo_s_spec_imin(4) = 39,
+sdo_s_spec_imax(4) = 46,
+sdo_s_spec_floor(4) = 4.0E-5,
+sdo_s_spec_fraction(4) = 0.05,
+sdo_s_spec_imin(5) = 47,
+sdo_s_spec_imax(5) = 58,
+sdo_s_spec_floor(5) = 0.002,
+sdo_s_spec_fraction(5) = 0.05,
+mdsig_list_filename = '/home/inst/xzm0005/recon/diagnostics/All/V3/diagnostic.all_mdsig.LIST',
+sdo_data_a(1:58) = 0.1464843976728072, 0.11702879627464986, 0.1102332801217661, 0.059657637585272184, 0.01752755325434323, -0.16383411413861443, -0.2280464184731971, -0.003478610093248039, 0.10980950648522259, 0.15823136283196018, -0.008070595949706782, -0.058188462837297575, -0.05127876728023338, 0.1339656451581658, 0.14858120706320965, 0.12751973169710848, 0.1292910095602316, 0.04622560930082921, -0.09375982959162976, -0.13558634464272107, -0.007883652030578666, 0.13286980957553646, 0.1273978045393968, -0.001540610189522749, -0.13092143711443766, -0.09679750210437599, 0.043235116439962744, 0.1296321387085578, 0.13504965958631296, 0.11406897132707014, 0.1155310487081848, -0.02395831208212931, -0.07885262112025496, 0.09189224984608775, -0.03552749646665742, -0.15272858133955763, 0.052940835174084266, 0.03762950173631049, -0.005549613384084473, -0.004635219193379728, -0.003189915479013919, -0.0015369796353593133, -0.004304686291946674, -0.0033640293508502214, -0.0015438159654196037, 0.0001577861580012253, -0.1957203180799389, 0.06458897241499703, -0.05075330914771835, 0.20852742138954428, -0.09986024513504903, -0.12497612091321553, 0.07606922146196117, -0.11663998002807012, 0.21068170541011488, -0.05631734462285465, 0.19884105444580083, 0.04897548900650591, 
+sdo_sigma_a(1:58) = 4.442886468278642e-05, 2.7171563217182058e-05, 4.104295815968512e-05, 3.473523213231576e-05, 3.934275946960696e-05, 1.6964466330117776e-05, 1.7325635706113846e-05, 2.6606264417482517e-05, 1.6705899312109516e-05, 2.1411517522937162e-05, 1.533004871848228e-05, 2.8703939417632158e-05, 2.305139327588139e-05, 2.007319870890752e-05, 4.5344911805559257e-05, 5.473801777112661e-05, 3.7096098286219494e-05, 4.1973807830634186e-05, 7.260115433624187e-05, 0.00047404498372115154, 3.055011625459256e-05, 2.8220057248409207e-05, 8.270289797971983e-05, 7.694451898269433e-05, 2.7749471444767365e-05, 2.100411589786688e-05, 5.674027125601137e-05, 5.104679320564754e-05, 4.29986007752605e-05, 0.00023188735343399646, 0.00016201448983162487, 9.823626592877669e-06, 2.2365070634328617e-05, 1.7819661429724556e-05, 2.515231932023223e-05, 0.0002672946267040871, 0.00028871542941055295, 2.088142158636515e-05, 6.785216299545585e-07, 5.045492172068285e-07, 6.086933349899341e-07, 8.179917908777162e-07, 7.7003898691875e-07, 6.923372667688336e-07, 1.0060706574220113e-06, 2.276212437610059e-05, 5.32443093228127e-05, 6.23929789989805e-05, 6.293878539989035e-05, 4.069923691930374e-05, 0.0006494555691595398, 0.0001676371642607997, 2.5430859143797235e-05, 5.9671470470401933e-05, 4.91978469102443e-05, 3.2016863505725216e-05, 3.242259106231593e-05, 6.038128452271811e-05, 
+
+! SXR Diagnostics
+sdo_w_spec_imin(5) = 110,
+sdo_w_spec_imax(5) = 110,
+sdo_w_spec_weight(5) = 0.0,
+sdo_w_spec_imin(6) = 168,
+sdo_w_spec_imax(6) = 168,
+sdo_w_spec_weight(6) = 0.0,
+sdo_s_spec_imin(6) = 59,
+sdo_s_spec_imax(6) = 60,
+sdo_s_spec_floor(6) = 0.002,
+sdo_s_spec_fraction(6) = 0.1,
+sdo_s_spec_imin(7) = 61,
+sdo_s_spec_imax(7) = 76,
+sdo_s_spec_floor(7) = 0.001,
+sdo_s_spec_fraction(7) = 0.05,
+sdo_s_spec_imin(8) = 77,
+sdo_s_spec_imax(8) = 80,
+sdo_s_spec_floor(8) = 0.002,
+sdo_s_spec_fraction(8) = 0.1,
+sdo_s_spec_imin(9) = 81,
+sdo_s_spec_imax(9) = 96,
+sdo_s_spec_floor(9) = 0.001,
+sdo_s_spec_fraction(9) = 0.05,
+sdo_s_spec_imin(10) = 97,
+sdo_s_spec_imax(10) = 100,
+sdo_s_spec_floor(10) = 0.002,
+sdo_s_spec_fraction(10) = 0.1,
+sdo_s_spec_imin(11) = 101,
+sdo_s_spec_imax(11) = 116,
+sdo_s_spec_floor(11) = 0.001,
+sdo_s_spec_fraction(11) = 0.05,
+sdo_s_spec_imin(12) = 117,
+sdo_s_spec_imax(12) = 118,
+sdo_s_spec_floor(12) = 0.002,
+sdo_s_spec_fraction(12) = 0.05,
+sdo_s_spec_imin(13) = 119,
+sdo_s_spec_imax(13) = 121,
+sdo_s_spec_floor(13) = 6.0E-4,
+sdo_s_spec_fraction(13) = 0.2,
+sdo_s_spec_imin(14) = 122,
+sdo_s_spec_imax(14) = 135,
+sdo_s_spec_floor(14) = 5.0E-4,
+sdo_s_spec_fraction(14) = 0.1,
+sdo_s_spec_imin(15) = 136,
+sdo_s_spec_imax(15) = 141,
+sdo_s_spec_floor(15) = 6.0E-4,
+sdo_s_spec_fraction(15) = 0.2,
+sdo_s_spec_imin(16) = 142,
+sdo_s_spec_imax(16) = 155,
+sdo_s_spec_floor(16) = 5.0E-4,
+sdo_s_spec_fraction(16) = 0.1,
+sdo_s_spec_imin(17) = 156,
+sdo_s_spec_imax(17) = 161,
+sdo_s_spec_floor(17) = 6.0E-4,
+sdo_s_spec_fraction(17) = 0.2,
+sdo_s_spec_imin(18) = 162,
+sdo_s_spec_imax(18) = 175,
+sdo_s_spec_floor(18) = 5.0E-4,
+sdo_s_spec_fraction(18) = 0.1,
+sdo_s_spec_imin(19) = 176,
+sdo_s_spec_imax(19) = 178,
+sdo_s_spec_floor(19) = 6.0E-4,
+sdo_s_spec_fraction(19) = 0.2,
+sxrch_dot_filename = '/home/inst/xzm0005/recon/diagnostics/SXR_camera/SC252_ALL_Jan_2015.txt',
+sdo_data_a(59:118) = 8.22777841605392e-10, 9.929183261846405e-10, 5.257799734477125e-10, 5.439309512867646e-10, 7.589502272263071e-10, 5.81030752144608e-10, 1.0451771854575162e-09, 8.417266646241829e-10, 9.274950214460784e-10, 6.005779590482026e-10, 7.475809334150327e-10, 6.171332465277778e-10, 1.0324116625816993e-09, 8.522981132557188e-10, 9.941150939542485e-10, 6.709877961601307e-10, 5.283729702818627e-10, 6.554298151552287e-10, 6.630093443627451e-10, 9.135327308006536e-10, 2.2071790383532154e-08, 2.5159492991329015e-08, 2.5880505680258754e-08, 4.242476793675641e-08, 7.132361293618197e-08, 1.0234097561805076e-07, 1.3442085989160475e-07, 1.6394037732891008e-07, 1.8829474791981816e-07, 2.1087378208933311e-07, 2.1908103157492246e-07, 2.2453634972665825e-07, 2.179853807087817e-07, 2.035449152678446e-07, 1.8580814498701905e-07, 1.6332158232046888e-07, 1.3986929351208255e-07, 1.1855341468761168e-07, 9.790244133643853e-08, 7.954279581705728e-08, 6.797734117196277e-08, 8.266080532198638e-08, 1.041496719410217e-07, 1.2624076394473805e-07, 1.4710955401651221e-07, 1.6773697036543702e-07, 1.8635197870092455e-07, 2.0588834924635545e-07, 2.2022490781896252e-07, 2.2500690260743786e-07, 2.3353585760577834e-07, 2.1041231342390475e-07, 1.8728876924203113e-07, 1.6152499953126596e-07, 1.3475296918083638e-07, 1.0740231408013237e-07, 8.091059416727303e-08, 5.5105127072801774e-08, 3.521076713512147e-08, 5.082712597317165e-07, 
+sdo_sigma_a(59:118) = 7.440168216046599e-11, 8.329684326805033e-11, 6.486526752321631e-11, 1.0419454115289053e-10, 7.573110092285484e-11, 6.011492729779392e-11, 8.302900552233917e-11, 7.934133690571871e-11, 8.203750666805101e-11, 6.90893530583257e-11, 1.0312109528817324e-10, 8.81961188405254e-11, 7.500257057491796e-11, 7.54395805993574e-11, 7.831437205551129e-11, 9.710180240728515e-11, 7.954207765898454e-11, 6.872003655888448e-11, 9.149718516485019e-11, 7.781735369164141e-11, 6.2914654272894215e-09, 5.78804280306946e-09, 6.51022572868239e-09, 6.0437317481826485e-09, 6.5098318711302595e-09, 6.736800497775105e-09, 8.992296078404975e-09, 8.916685436187203e-09, 6.855966017433102e-09, 6.545955983363447e-09, 6.834316897981128e-09, 8.330039556154812e-09, 7.350900452173782e-09, 7.853574393311014e-09, 8.482353632343839e-09, 9.073659992496555e-09, 9.529722914959973e-09, 1.0281078396877939e-08, 9.001020726767517e-09, 8.565529826095266e-09, 8.85155944395369e-09, 8.945667318932524e-09, 9.247362015064621e-09, 1.0149244440033284e-08, 1.0513238827342762e-08, 9.850814582354896e-09, 1.011867409649463e-08, 1.0121195565576375e-08, 8.981957012088909e-09, 8.565850978042956e-09, 8.842260854604399e-09, 9.590926266957312e-09, 1.1623297976598832e-08, 1.054461377432268e-08, 1.0358557153166822e-08, 1.0722170832438445e-08, 9.61111243884767e-09, 1.0823858684561348e-08, 9.490932121855204e-09, 2.346214298680254e-08, 
+
+! Interferometer Diagnostics
+sdo_s_spec_imin(20) = 179,
+sdo_s_spec_imax(20) = 181,
+sdo_s_spec_floor(20) = 1.0E17,
+sdo_s_spec_fraction(20) = 0.05,
+ipch_dot_filename = '/home/tgg0011/bin/python/ipch.cth_4ch_tg',
+sdo_data_a(119:122) = 8.384149798980323e+18, 1.6816419714956954e+18, 2.5900164944718264e+18, 1.5463176448628905e+18, 
+sdo_sigma_a(119:122) = 2.688853829352862e+17, 7346878678015734.0, 9962188797201240.0, 1.2384401857961746e+16, 
+
+! Bar Limiter
+lif_on_edge(1) = T,
+n_phi_lif(1) = 1,
+lif_phi_degree(1,:) = 0.0, 
+lif_sigma(1) = 0.001,
+lif_rc(1) = 1.0,
+lif_zc(1) = 0.26,
+sdo_w_spec_imin(7) = 183,
+sdo_w_spec_imax(7) = 183,
+sdo_w_spec_weight(7) = 0.0,
+lif_arz(1,0,1) = 0.74,
+lif_arz(1,1,0) = -0.0,
+
+! Circular Limiter
+lif_on_edge(2) = T,
+n_phi_lif(2) = 1,
+lif_phi_degree(2,:) = 12.0, 
+lif_sigma(2) = 0.001,
+lif_rc(2) = 0.7493,
+lif_zc(2) = 0.0,
+sdo_w_spec_imin(8) = 184,
+sdo_w_spec_imax(8) = 184,
+sdo_w_spec_weight(8) = 0.0,
+lif_arz(2,0,0) = -0.060024999999999995,
+lif_arz(2,2,0) = 1,
+lif_arz(2,0,2) = 1,
+
+! Circular Limiter
+lif_on_edge(3) = T,
+n_phi_lif(3) = 1,
+lif_phi_degree(3,:) = 60.0, 
+lif_sigma(3) = 0.001,
+lif_rc(3) = 0.7493,
+lif_zc(3) = 0.0,
+sdo_w_spec_imin(9) = 185,
+sdo_w_spec_imax(9) = 185,
+sdo_w_spec_weight(9) = 0.0,
+lif_arz(3,0,0) = -0.06175225,
+lif_arz(3,2,0) = 1,
+lif_arz(3,0,2) = 1,
+
+! Circular Limiter
+lif_on_edge(4) = T,
+n_phi_lif(4) = 1,
+lif_phi_degree(4,:) = 40.0, 
+lif_sigma(4) = 0.001,
+lif_rc(4) = 0.7493,
+lif_zc(4) = 0.0,
+sdo_w_spec_imin(10) = 186,
+sdo_w_spec_imax(10) = 186,
+sdo_w_spec_weight(10) = 0.0,
+lif_arz(4,0,0) = -0.05978025,
+lif_arz(4,2,0) = 1,
+lif_arz(4,0,2) = 1,
+
+! Circular Limiter
+lif_on_edge(5) = T,
+n_phi_lif(5) = 8,
+lif_phi_degree(5,:) = 0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 
+lif_sigma(5) = 0.001,
+lif_rc(5) = 0.7493,
+lif_zc(5) = 0.0,
+sdo_w_spec_imin(11) = 187,
+sdo_w_spec_imax(11) = 187,
+sdo_w_spec_weight(11) = 0.0,
+lif_arz(5,0,0) = -0.06760000000000001,
+lif_arz(5,2,0) = 1,
+lif_arz(5,0,2) = 1,
+
+! Combination of signals
+coosig_name(1) = 'limiter',
+coosig_type(1) = 'max',
+coosig_units(1) = 'm',
+coosig_indices(1,:) = 183, 184, 185, 186, 187, 
+coosig_coeff(1,:) = 1.0, 1.0, 1.0, 1.0, 1.0, 
+sdo_s_spec_imin(21) = 188,
+sdo_s_spec_imax(21) = 188,
+sdo_s_spec_floor(21) = 0.001,
+sdo_s_spec_fraction(21) = 0.1,
+
+! Total Signals
+n_lif = 5,
+n_coosig = 1,
+n_prior = 0,
+n_sdata_o = 128, 
+/
+&END

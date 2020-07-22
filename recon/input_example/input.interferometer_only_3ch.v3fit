@@ -1,0 +1,174 @@
+&v3fit_main_nli
+vmec_nli_filename = 'input.20032705_1.64_2.vmec',
+
+! Reconstruction Controls
+my_task = 'reconstruct_a1',
+nrstep = 20,
+dg2_stop = 0.5,
+cut_svd = 2.0E-5,
+cut_eff = 1.0E-4,
+cut_marg_eff = 0.0,
+cut_delta_a = 0.0,
+cut_dg2 = 0.0,
+astep_max = 100.0,
+step_type = 'lm',
+
+! Model Specification
+
+! Electron Density
+
+! Warning Spline Model Unknown
+
+! Add model discprion to:
+
+! Reconstruction Batch Runner.vi
+pp_ne_as = 0.0, 0.3, 0.7, 1.0, 
+pp_ne_af = 0.5, 0.4, 0.25, 0.0, 
+ne_pp_unit = 1.0E18,
+pp_ne_ptype = 'line_segment',
+pp_ne_b = 0.0, 0.0, 0.0, 0.0, 
+ne_min = 0.0,
+
+! Derived Parameters
+n_dp = 0,
+
+! Reconstruction Parameters
+n_rp = 4,
+rp_type(1) = 'phiedge',
+rp_vrnc(1) = 5.0E-4,
+rp_index(1) = 0,
+rp_index2(1) = 0,
+rp_range_type(1,:) =
+rp_range_value(1,:) = 
+rp_range_index(1,1,:) = 
+rp_range_index(1,2,:) = 
+rp_type(2) = 'pp_ne_af',
+rp_vrnc(2) = 0.1,
+rp_index(2) = 1,
+rp_index2(2) = 0,
+rp_range_type(2,:) = 'ne_min',
+rp_range_value(2,:) = 
+rp_range_index(2,1,:) = 
+rp_range_index(2,2,:) = 
+rp_type(3) = 'pp_ne_af',
+rp_vrnc(3) = 0.1,
+rp_index(3) = 2,
+rp_index2(3) = 0,
+rp_range_type(3,:) = 'ne_min',
+rp_range_value(3,:) = 
+rp_range_index(3,1,:) = 
+rp_range_index(3,2,:) = 
+rp_type(4) = 'pp_ne_af',
+rp_vrnc(4) = 0.1,
+rp_index(4) = 3,
+rp_index2(4) = 0,
+rp_range_type(4,:) = 'ne_min',
+rp_range_value(4,:) = 
+rp_range_index(4,1,:) = 
+rp_range_index(4,2,:) = 
+
+! Reconstruction Signals
+
+! Interferometer Diagnostics
+sdo_w_spec_imin(2) = 2,
+sdo_w_spec_imax(2) = 4,
+sdo_w_spec_weight(2) = 1.0,
+sdo_s_spec_imin(1) = 1,
+sdo_s_spec_imax(1) = 3,
+sdo_s_spec_floor(1) = 2.5E15,
+sdo_s_spec_fraction(1) = 0.05,
+sdo_s_spec_imin(2) = 4,
+sdo_s_spec_imax(2) = 4,
+sdo_s_spec_floor(2) = 6.25E15,
+sdo_s_spec_fraction(2) = 0.05,
+ipch_dot_filename = '/home/v3fit/public/input_files/ipch_dot/ipch.cth_3ch',
+sdo_data_a(1:3) = 5.183385901412138E18, 1.60516777702999194E18, 2.4862649597434527E18,
+sdo_sigma_a(1:3) = 6.003659095065024E17, 2.0353591188726336E16, 3.1647175285620836E16,
+
+! Bar Limiter
+lif_on_edge(1) = T,
+n_phi_lif(1) = 1,
+lif_phi_degree(1,:) = 0.0, 
+lif_sigma(1) = 0.001,
+lif_rc(1) = 1.0,
+lif_zc(1) = 0.26,
+sdo_w_spec_imin(3) = 4,
+sdo_w_spec_imax(3) = 4,
+sdo_w_spec_weight(3) = 0.0,
+lif_arz(1,0,1) = 0.74,
+lif_arz(1,1,0) = -0.0,
+
+! Circular Limiter
+lif_on_edge(2) = T,
+n_phi_lif(2) = 1,
+lif_phi_degree(2,:) = 12.0, 
+lif_sigma(2) = 0.001,
+lif_rc(2) = 0.7493,
+lif_zc(2) = 0.0,
+sdo_w_spec_imin(4) = 5,
+sdo_w_spec_imax(4) = 5,
+sdo_w_spec_weight(4) = 0.0,
+lif_arz(2,0,0) = -0.060024999999999995,
+lif_arz(2,2,0) = 1,
+lif_arz(2,0,2) = 1,
+
+! Circular Limiter
+lif_on_edge(3) = T,
+n_phi_lif(3) = 1,
+lif_phi_degree(3,:) = 60.0, 
+lif_sigma(3) = 0.001,
+lif_rc(3) = 0.7493,
+lif_zc(3) = 0.0,
+sdo_w_spec_imin(5) = 6,
+sdo_w_spec_imax(5) = 6,
+sdo_w_spec_weight(5) = 0.0,
+lif_arz(3,0,0) = -0.06175225,
+lif_arz(3,2,0) = 1,
+lif_arz(3,0,2) = 1,
+
+! Circular Limiter
+lif_on_edge(4) = T,
+n_phi_lif(4) = 1,
+lif_phi_degree(4,:) = 40.0, 
+lif_sigma(4) = 0.001,
+lif_rc(4) = 0.7493,
+lif_zc(4) = 0.0,
+sdo_w_spec_imin(6) = 7,
+sdo_w_spec_imax(6) = 7,
+sdo_w_spec_weight(6) = 0.0,
+lif_arz(4,0,0) = -0.05978025,
+lif_arz(4,2,0) = 1,
+lif_arz(4,0,2) = 1,
+
+! Circular Limiter
+lif_on_edge(5) = T,
+n_phi_lif(5) = 8,
+lif_phi_degree(5,:) = 0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 
+lif_sigma(5) = 0.001,
+lif_rc(5) = 0.7493,
+lif_zc(5) = 0.0,
+sdo_w_spec_imin(7) = 8,
+sdo_w_spec_imax(7) = 8,
+sdo_w_spec_weight(7) = 0.0,
+lif_arz(5,0,0) = -0.06760000000000001,
+lif_arz(5,2,0) = 1,
+lif_arz(5,0,2) = 1,
+
+! Combination of signals
+coosig_name(1) = 'limiter',
+coosig_type(1) = 'max',
+coosig_units(1) = 'm',
+coosig_indices(1,:) = 4,5,6,7,8, 
+coosig_coeff(1,:) = 1.0, 1.0, 1.0, 1.0, 1.0, 
+sdo_s_spec_imin(3) = 9,
+sdo_s_spec_imax(3) = 9,
+sdo_s_spec_floor(3) = 0.001,
+sdo_s_spec_fraction(3) = 0.1,
+
+! Total Signals
+n_lif = 5,
+n_coosig = 1,
+n_prior = 0,
+n_sdata_o = 9,
+/
+&END

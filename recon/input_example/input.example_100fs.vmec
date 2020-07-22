@@ -1,0 +1,49 @@
+&INDATA
+
+! VMEC execution parameters.
+MGRID_FILE = '/home/v3fit/public/input_files/mgrid/mgrid_cth.18b.mo.f5sa_ec6a.nc',
+LFORBAL = F,
+LFREEB = T,
+DELT = 0.7,
+TCON0 = 2.0,
+NFP = 5,
+NS_ARRAY = 100, 
+FTOL_ARRAY = 1.0E-20, 
+NITER = 25000,
+NSTEP = 200,
+NTOR = 4,
+MPOL = 5,
+NZETA = 32,
+NVACSKIP = 9,
+LASYM = F,
+OMP_NUM_THREADS = 1,
+
+! Coil Currents. (HF, TVF, OH, SVF, RF, TF, VV, HCF)
+EXTCUR = 2753.738624888936, 869.6489856867394, 23855.375857908875, 0.024662561342121404, 0.0, -1645.7667464477802, 5627.334648858245, 1533.780676224823, 
+
+! Fitting parameters.
+GAMMA = 0.0,
+PHIEDGE = -0.044620384762375204,
+BLOAT = 1.0,
+
+! Initial Position.
+RAXIS(0) = 0.7275,
+ZAXIS(0) = 0.0,
+RBC(0,0) = 0.698,
+RBC(0,1) = 0.131,
+ZBS(0,0) = 0.0,
+ZBS(0,1) = 0.2625,
+
+! Plasma current parameters.
+NCURR = 1,
+CURTOR = 43764.00187491754,
+AC = 1.0, 12, 10, 
+PCURR_TYPE = 'fermi_dirac',
+
+! Plasma pressure parameters
+SPRES_PED = 1.0,
+AM = 1.0, 1.5, 6.0, 
+PRES_SCALE = 555.1053538527717,
+pmass_type = 'two_power',
+/
+&END

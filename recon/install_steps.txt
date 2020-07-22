@@ -1,0 +1,97 @@
+#While on recon2
+
+
+
+#Install Anaconda3
+#Copy Anaconda3.sh to local directory (the one you are in)
+cp /home/cth/cthgroup/Python/Anaconda3.sh Anaconda3.sh
+
+#Install
+bash Anaconda3.sh
+#Skip install VSCode
+
+#Update
+conda update conda
+
+pip install netCDF4
+
+#add to .bashrc
+export PYTHONPATH=$PYTHONPATH:/home/cth/cthgroup/Python/recon
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/cth/cthgroup/Python/recon/local64/lib
+
+#source new .bashrc
+source .bashrc
+
+
+#test mdsplus
+python
+>>> import MDSplus
+#if no error pops up
+>>> exit()
+
+#MDSplus should be working now
+cd ~
+#make bin directory if you don't have it
+mkdir bin
+cd bin
+
+#move shotrunner files from bonnie to folder called python
+cp -r /home/cth/cthgroup/Python/recon/install python
+
+cd python
+ls
+
+#there should be three files in there: full_shot_runner.py recon_runner.py v3config.txt
+#Edit v3config.txt 
+#change working_directory to where ever you what the generated input files to go.
+#default is ~/reconstructions/
+#for simplicity you could just make that directory 
+#example:    cd ~
+#example:    mkdir reconstructions
+
+#Test the code while in ~/bin/python to generate the input files only
+python recon_runner.py 14092626 1.65 --inputs
+
+#example:    python recon_runner.py SHOTNUMBER TIME
+#example:    python recon_runner.py SHOTNUMBER 'TIME1 TIME2' #NOTE: quotation marks
+#example:    python full_shot_runner.py SHOTNUMBER STARTTIME ENDTIME NUMBER_OF_TIME_SLOTS
+
+
+
+#input files can be run in their directory 
+#example:    cd ~/reconstructions/14092626/1.65/
+#example:    xv3fita input.14092626_1.65.v3fit
+
+#V3FIT testing
+
+#To use the new current profile model
+#create link to my v3fit executable
+
+#make directory you want link to be in
+#example:    mkdir v3fit_test && cd v3fit_test
+
+ln -s /home/jdk0026/public/xv3fit_kring xv3fit_kring
+
+#add path to .bashrc
+export PATH=~/v3fit_test:$PATH
+
+#source new .bashrc
+source .bashrc
+
+
+#input files can be run in their directory 
+#example:    xv3fit_kring input.14092626_1.65.v3fit
+
+
+#Now you can make input files and run them from one command
+
+#Test the code while in ~/bin/python
+python recon_runner.py 14092626 1.65 
+
+#NOTE: if the input files are already made, it will skip making them and just run v3fit
+#alternatively, you can edit the v3config.txt for your v3fit executable of choice
+ 
+
+
+
+
