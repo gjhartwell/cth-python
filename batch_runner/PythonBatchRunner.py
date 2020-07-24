@@ -19,7 +19,7 @@ runBatchMain (line 164) is area where code would run
 
 import tkinter as tk
 from chooseBatchFile import chooseBatchFile
-import readBatchFile
+from readBatchFile import readBatchFile
 from makeReconDirs import makeReconDirs
 
 class Server(object):
@@ -58,6 +58,8 @@ class BatchRunner(tk.Frame):
         self.userName="java-client"
         self.dataHost="MDS"
         self.autoShotTime=True
+        self.dataTimeInterval.start=1.61
+        self.dataTimeInterval.stop=1.68
         self.serverAddressEntry.insert(0,self.server.address)
         self.serverPortEntry.insert(0,str(self.server.port))
         self.serverTimeoutEntry.insert(0,str(self.server.timeout))
