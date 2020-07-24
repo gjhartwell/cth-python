@@ -41,6 +41,6 @@ Files:
                     - dialog to display error when no batch file is given
                     - before trying to run batch_runner
                     
-    BatchContents   - defines the BathContents class and routines to 
+    readBatchFile   - defines the BathContents class and routines to 
 		    - read, parse, and store information in the batch file
                     

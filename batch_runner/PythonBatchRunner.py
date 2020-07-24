@@ -8,9 +8,20 @@ Created on Thu Feb  1 13:15:44 2018
 Notes: 
 GJH Jul 24 2020
 Provides a GUI interface for the batch runner code
-Interface opens, but does not run vatch_runner code.
 
-runBatchMain (line 164) is area where code would run
+progress
+    Interface opens and inputs data correctly
+    batch file is read
+    directories created
+
+
+    runBatchMain (around line 176) is area where code runs
+    
+    Test_ReadV3Data is a test program to read the batch, v3data and v3config 
+    files
+    
+    The routines in that file should be transfered here when they are working
+    there
 
 
 """
@@ -19,7 +30,7 @@ runBatchMain (line 164) is area where code would run
 
 import tkinter as tk
 from chooseBatchFile import chooseBatchFile
-from readBatchFile import readBatchFile
+from readBatchFile import BatchContents
 from makeReconDirs import makeReconDirs
 
 class Server(object):
@@ -169,7 +180,9 @@ class BatchRunner(tk.Frame):
         if not self.checkPBREntries():
             print("Bad inputs - Need a dialog")
         else:
-            bfc=readBatchFile()
+            print(self.batchFileName)
+            bfc=BatchContents(self.batchFileName)
+            bfc.readBatchFile()
             makeReconDirs(bfc)
             
     def checkPBREntries(self):  

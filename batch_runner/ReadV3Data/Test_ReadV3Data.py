@@ -5,6 +5,7 @@
      
 
  These are testing routines for the batch file reader
+ The solutions found here should be migrated to the PythonBatchRunner code
  
  Greg Hartwell
  Last modified June 25, 2020
@@ -24,8 +25,7 @@ from ReadV3Config import ReadV3Config
 #from callErrorDialog import callErrorDialog
 
 #file=chooseBatchFile() # Call choose file GUI
-file="C:\\Users\hartwgj\\Desktop\\pythoncode\\Batch_Runner" + \
-    "\\TestReconFiles\\batchfile.cthsl"
+file="C:\\Users\\hartwgj\\Desktop\\TestReconFiles\\batchfile.cthsl"
 
 #if not file:
 #    error="No batch or CTH shotlist given---You must provide a shotlist"
