@@ -41,6 +41,15 @@ makeReconDirs(bfc)
 #    only do this once
 #    makeReconDirs must be run after chooseBatchFile
 
+
+"""
+looks like this is doing one shot at a time 
+need to include a debug or verbose statement to limit when messages
+are being displayed in ReadV3DataFile and ReadV3Config
+
+
+
+"""
 #for shot in bfc.shot_time_array:
 shot=bfc.shot_time_array[0]
 print(shot.shotnumber)

@@ -13,6 +13,7 @@ progress
     Interface opens and inputs data correctly
     batch file is read
     directories created
+    
 
 
     runBatchMain (around line 176) is area where code runs
@@ -22,6 +23,14 @@ progress
     
     The routines in that file should be transfered here when they are working
     there
+    
+    progress
+        batch file is read
+        directories created
+        batchfile is preprocessed before interpreted
+        a shot/time array is created
+        data is stored into v3data and v3fit classes
+        
 
 
 """
