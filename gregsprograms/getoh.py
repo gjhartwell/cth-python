@@ -1,10 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jul 27 11:20:15 2020
+
+@author: hartwgj
+"""
 # --------------------------------------
-# GetIp.py
+# GetOH.py
 # 
 # MDSplus Python project
 # for CTH data access
 #
-# 	get_ip --- plots the plasma current for the given shot 
+# 	getOH --- plots the plasma current for the given shot 
 #
 # Parameters:
 #	shotnum - integer - the shotnumber to open
@@ -12,7 +18,7 @@
 # Returns:
 #
 # Example:
-#       plasma_current=get_ip(shotnum)
+#       oh_current=getoh(shotnum,server)
 #       not sure this works yet
 #
 # Also defines:
@@ -29,7 +35,7 @@ from timeSubset import timeSubset
 
 #shotnum = argv[1]
 
-def getIp(shotnum,server):
+def getOH(shotnum,server):
     if not server: 
         print('server = ',server)
         c=cthmds.cthconnect("mds")
@@ -37,23 +43,14 @@ def getIp(shotnum,server):
         c=cthmds.cthconnect(server)
 	
     cthmds.cthopen(c,shotnum)
-    Ip=c.get('\\I_p')
-    time=c.get('dim_of(\\I_p)')
+    oh=c.get('\\I_OH')
+    time=c.get('dim_of(\\I_OH)')
     c.closeAllTrees
 	
-    time2=timeSubset(time,time,1.6,1.7)
-    Ip2=timeSubset(time,Ip,1.6,1.7)
+    time2=timeSubset(time,time,1.6,2.5)
+    oh=timeSubset(time,oh,1.6,2.5)
 	
-    print('maximum plasma current: ',max(Ip2))
+    print('maximum OH current: ',max(oh))
 
-    plt.plot(time2,Ip2)
+    plt.plot(time2,oh)
     plt.show()
-
-#getIp(20032705,"Neil")
-#getIp(20032705,"mds")
-
-#-----------------------------------------------------------------------------
-
-	
-
-
