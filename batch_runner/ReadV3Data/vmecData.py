@@ -23,8 +23,8 @@ class VMECData(object):
         self.DELT = 0.0
         self.TCON0 = 0.0
         self.NFP = 0
-        self.NS_ARRAY = 0
-        self.FTOL_ARRAY = 1.0E-20
+        self.NS_ARRAY = [0]
+        self.FTOL_ARRAY = [1.0E-20]
         self.NITER = 0
         self.NSTEP = 0
         self.NTOR = 0

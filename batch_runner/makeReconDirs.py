@@ -62,7 +62,7 @@ def makeReconDirs(batch_file_contents):
                 os.makedirs(newpath)
         # otherwise, find a new directory
         else:
-            print("bad dir")
+            print("directories exist")
     else:
         print("need a new base directory")
         

@@ -290,7 +290,7 @@ class ReconstructionString(object):
     def writeV3FITBarLimiterSignal(self,v3fitInputs,idx):
         self.addComment("Bar Limiter")
         print("writing V3FIT Bar Limiter Signals")
-        self.addDouble()
+        self.addDouble(0.0)
         self.addBool(self.formatTo1D("lif_on_edge",idx))  
     
     def writeV3FITCircularLimiterSignal(self,v3fitInputs):
@@ -316,7 +316,7 @@ class ReconstructionString(object):
         self.writeV3FITModels(v3fitInputs)
         self.writeV3FITDerivedParameters(v3fitInputs)
         self.writeV3FITReconParameters(v3fitInputs)
-        self.writeV3FITReconSignals(v3fitInputs)
+        #self.writeV3FITReconSignals(v3fitInputs)
         
 # -------------------------------------------------------------------------
 #           Start of writing VMEC Parameters 
@@ -409,6 +409,10 @@ class ReconstructionString(object):
         self.writeVMECPlasmaCurrent(vmecInputs)
         self.writeVMECPlasmaPressure(vmecInputs)
         
+
+
+
+
 # testing
 
 #
