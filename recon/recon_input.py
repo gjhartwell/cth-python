@@ -27,7 +27,7 @@ class InputClass:
                  AM=[1.0, 1.5, 6.0], 
                  pmass_type='two_power',
                  v3fit_executable='xv3fit_kring',
-                 diagnostic_count = [58, 60, 4]):  #mag, sxr/bolo, intfrm
+                 diagnostic_count = [58,120, 4]):  #mag, sxr/bolo, intfrm
         self.data = {}
         self.data['shot number'] = shotnumber
         self.data['times'] = times                        # in seconds
@@ -561,10 +561,8 @@ class InputClass:
         
         if param_value[21] > param_value[22]:
             param_value[21] = param_value[22]
-        set_phiedge = -.035
-        lines_vmec[phi_ind] = str('PHIEDGE = ' + str(set_phiedge) + ',\n')
-        #lines_vmec[phi_ind] = str('PHIEDGE = ' + str(param_value[0]) + ',\n')
-
+        
+        lines_vmec[phi_ind] = str('PHIEDGE = ' + str(.8*param_value[0]) + ',\n')
         lines_vmec[ac_ind]  = str('AC = 1.0, ' + str(param_value[21]) +', ' +
                                   str(param_value[22]) + ',\n')
         lines_vmec[am_ind]  = str('AM = 1.0, ' + str(param_value[27]) +', 6.0,\n')        
