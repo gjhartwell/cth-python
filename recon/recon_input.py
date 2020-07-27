@@ -7,7 +7,7 @@ Created on Tue Nov 27 08:47:03 2018
 """
 
 import numpy as np
-from v3data import V3Data
+from recon.v3data import V3Data
 import subprocess
 import os
 from netCDF4 import Dataset
