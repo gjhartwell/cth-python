@@ -22,6 +22,7 @@ from ReadV3Data import ReadV3DataFile
 from ReadV3Config import ReadV3Config
 #from createReconString import createReconString
 from ReconstructionString import ReconstructionString
+from ReconComm import ReconComm
 
 #from callErrorDialog import callErrorDialog
 
@@ -83,6 +84,19 @@ rs.writeVMECParameters(vmecClassData)
 rs.writeV3FITHeader(shot.shotnumber, time)
 rs.writeV3FITParameters(v3fitClassData)
 
+message=rs.getReconString()
+comm=ReconComm('recon2.physics.auburn.edu',2001,10)
+comm.connect()
+comm.writeToServer(message)
+print('---------------------------')
+print("Error Check 1")
+error=comm.checkError()
+print("Error Code %s and error - %s" % error)
+print('---------------------------')
+print("Error Check 2")
+error=comm.checkError()
+print("Error Code %s and error - %s" % error)
+comm.close()
 #rs.addComment("This is a test")
 #rs.addBool("T or F",True)
 #rs.addInt8("INT8",8)

@@ -290,14 +290,14 @@ class ReconstructionString(object):
     def writeV3FITBarLimiterSignal(self,v3fitInputs,idx):
         self.addComment("Bar Limiter")
         print("writing V3FIT Bar Limiter Signals")
-        self.addDouble(0.0)
-        self.addBool(self.formatTo1D("lif_on_edge",idx))  
+        #self.addDouble(0.0)
+        self.addInt32(self.formatTo1D("lif_on_edge",idx))  
     
     def writeV3FITCircularLimiterSignal(self,v3fitInputs):
         self.addComment("Bar Limiter")
         print("writing V3FIT Bar Limiter Signals")
         for idx in range(v3fitInputs.numberLimiters):
-            self.addBool(self.formatTo1D("lif_on_edge",idx))  
+            self.addInt32(self.formatTo1D("lif_on_edge",idx))  
 
                 
     def writeV3FITReconSignals(self,v3fitInputs):

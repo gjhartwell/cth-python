@@ -92,12 +92,12 @@ class ReconComm(object):
             bytesToRead -= nbytes
         return buffer       
         
-from ReconstructionString import ReconstructionString       
+# from ReconstructionString import ReconstructionString       
 #testing
-message=rs.getReconString()
-comm=ReconComm('131.204.212.162',2003,10)
-comm.connect()
-comm.writeToServer(message)
+# message=rs.getReconString()
+# comm=ReconComm('131.204.212.162',2003,10)
+# comm.connect()
+# comm.writeToServer(message)
 #print('---------------------------')
 #print("Error Check 1")
 #error=comm.checkError()
@@ -106,6 +106,6 @@ comm.writeToServer(message)
 #print("Error Check 2")
 #error=comm.checkError()
 #print("Error Code %s and error - %s" % error)
-comm.close()
+# comm.close()
 
     
