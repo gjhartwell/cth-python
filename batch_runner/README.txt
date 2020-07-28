@@ -4,6 +4,8 @@ Greg Hartwell - July 24, 2020
 
 Files and Usages
 
+ReconServer User Manual - written by Mark Cianciosa - details how the recon server works
+
 Folders:
     Dialog Testing  - test files for python dialog gui
     
@@ -43,4 +45,7 @@ Files:
                     
     readBatchFile   - defines the BathContents class and routines to 
 		    - read, parse, and store information in the batch file
+
+
+
                     
