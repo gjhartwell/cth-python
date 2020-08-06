@@ -26,5 +26,5 @@ def findAverageValues(data,shot):
         dataRange=timeSubset(data.taxis,data.data,time-dt/2,time+dt/2)
         value=np.sum(dataRange)/np.size(dataRange)
         averageValues=averageValues+[value]
-    print("average values: ",averageValues)
+    #print("average values: ",averageValues)
     return averageValues

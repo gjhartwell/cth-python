@@ -18,22 +18,40 @@ class VMECData(object):
 
     # these become the default execution parameters
     # need to create a method to change these if a
-        self.LFORBAL = False
-        self.LFREEB = True
-        self.DELT = 0.0
-        self.TCON0 = 0.0
-        self.NFP = 0
-        self.NS_ARRAY = [0]
-        self.FTOL_ARRAY = [1.0E-20]
-        self.NITER = 0
-        self.NSTEP = 0
-        self.NTOR = 0
-        self.MPOL = 0
-        self.NZETA = 0
-        self.NVACSKIP = 0
-        self.MGRID_FILE = ""
-        self.LASYM = False
-        self.OMP_NUM_THREADS = 1
+        # self.LFORBAL = False
+        # self.LFREEB = True
+        # self.DELT = 0.0
+        # self.TCON0 = 0.0
+        # self.NFP = 0
+        # self.NS_ARRAY = [0]
+        # self.FTOL_ARRAY = [1.0E-20]
+        # self.NITER = 0
+        # self.NSTEP = 0
+        # self.NTOR = 0
+        # self.MPOL = 0
+        # self.NZETA = 0
+        # self.NVACSKIP = 0
+        # self.MGRID_FILE = ""
+        # self.LASYM = False
+        # self.OMP_NUM_THREADS = 1
+        
+        self.lforbal = False
+        self.lfreeb = True
+        self.delt = 0.0
+        self.tcon0 = 0.0
+        self.nfp = 0
+        self.ns_array = [0]
+        self.ftol_array = [1.0E-20]
+        self.nitier = 0
+        self.nstep = 0
+        self.ntor = 0
+        self.mpol = 0
+        self.nzeta = 0
+        self.nvacskip = 0
+        self.mgrid_file = ""
+        self.lasym = False
+        self.omp_num_threads = 1
+
 
     #Coil Currents
         self.hf_ovf_current=0.0
@@ -46,18 +64,26 @@ class VMECData(object):
         self.hcf_current=0.0
 
     # Plasma Current Related
+        self.pcurr_types=['gauss_trunc', 'two_power','sum_atan',
+                          'power_series_I','Akima_spline_Ip','AAkima_spline_I',
+                          'cubic_spline_Ip','cubic_spline_I','pedestal',
+                          'rational','power_series', 'two_power_gs',
+                          'line_segment_Ip','line_segmen_I']
         self.ncurr=0
         self.curtor=0.0
         self.ac=[]
-        self.pcurr_type="two power"
+        self.pcurr_type="two_power"
         self.ac_aux_s=[]
         self.ac_aux_f=[]
 
     # Plasma Pressure Related
+        self.pmass_types=['gauss_trunc', 'two_power', 'two_Lorentz',
+                          'Akima_spline','cubic_spline','pedestal','rational',
+                          'power_series','line_segment', 'two_power_gs']
         self.pres_scale=0.0
         self.spres_ped=0.0
         self.am=[]
-        self.pmass_type="two power"
+        self.pmass_type="two_power"
         self.am_aux_s=[]
         self.am_aux_f=[]        
         
@@ -78,13 +104,14 @@ class VMECData(object):
 # end of VMECData class
 #-----------------------------------------------------------------------------
     
-    def VMECmoveToClass(self,shot,parsedLine,shotData,dataNames):
-        print("==============================================================")
-        print("in VMECmoveToClass")
+    def VMECmoveToClass(self,shot,parsedLine,shotData,dataNames,debug):
+        if debug:
+            print("=========================================================")
+            print("in VMECmoveToClass")
         members=['coil_currents','plasma_current','plasma_pressure',
                  'fit_parameters','positioning']
         
-        print(parsedLine)
+        if debug: print(parsedLine)
         # remove 'class'
         removeItems=['class','vmec_data']
         for item in removeItems:
@@ -94,19 +121,22 @@ class VMECData(object):
         
 
         parsedLine.reverse()
-        print(parsedLine)
+        if debug: print(parsedLine)
         stack=[]
         nameStack=[]        
         for v in parsedLine:
-            print("")
-            print ("searching for data name:",v)
+            if debug: 
+                print("")
+                print ("searching for data name:",v)
             if v in dataNames:
                 idx=dataNames.index(v)
-                print("found data %s at %d of %d" % (v,idx,len(shotData)))
+                if debug: 
+                    print("found data %s at %d of %d" % (v,idx,len(shotData)))
                 data=shotData[idx]
                 
                 if type(data) is list:
-                    print(" this is a list of length",len(data))
+                    if debug:
+                        print(" this is a list of length",len(data))
                     averageDataArray=[]
                     for item in data:
                         averageData=findAverageValues(item,shot)
@@ -119,7 +149,8 @@ class VMECData(object):
 
                 name=v
                 value=stack.pop(0)
-                print("in VMECmoveToClass",name,value)
+                if debug: 
+                    print("in VMECmoveToClass",name,value)
                 setattr(self,name,value)
             
             else:

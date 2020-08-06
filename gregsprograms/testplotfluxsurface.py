@@ -12,6 +12,7 @@ from vmec import get_bmod
 
 file='C:\\Users\\hartwgj\\Documents\\Reconstructions\\shots_200327\\shot_20032705\\20032705ls\\wout_20032705_1.64_2.nc'#
 #file="C:\\Users\\hartwgj\\Documents\\Reconstructions\\Steve_Recon_Pack_2016\\18102253\\wout_18102253_1.61_3.nc"
+file='C:\\Users\\hartwgj\\Desktop\\TestReconFiles\\wout_20032705_1.64_7.nc'
 test=wout_file(file)
 
 R,Z=get_fluxsurfaces(test,100,0)

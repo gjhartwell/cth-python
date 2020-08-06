@@ -106,7 +106,7 @@ class CTHData(object):
             
             elif 'channel' in kwargs:
                 (board,channel)=channelToBoard(kwargs['channel'])
-                print("in CTHdata.getdata board channel = ", board,channel)
+                #print("in CTHdata.getdata board channel = ", board,channel)
                 #handles getting data, time axis, etc.
                 cthdata_board_channel(self,mdsconn,board,channel)
             
@@ -131,7 +131,7 @@ class CTHData(object):
     """
     def add_signal(self, signal_to_add):
         sigtype=type(signal_to_add)
-        print(sigtype.__name__)
+        #print(sigtype.__name__)
         if sigtype.__name__ == 'CTHData':
             self.data=self.data+signal_to_add.data
         elif sigtype.__name__ == 'list':
@@ -170,7 +170,7 @@ class CTHData(object):
 #-----------------------------------------------------------------------------
 # Converts the channel to the board, channel pair
 def channelToBoard(channel):
-    print(channel)
+    #print(channel)
     channel=int(channel)
     if channel <= 24:
         board=0
@@ -235,7 +235,7 @@ def keyword_tester(**kwargs):
 def cthdata_board_channel(self,mdsconn,board,channel):
 
 # String versions of board and channel, with a '0' in front of ch 1-9
-    print('board and channel = ',board,channel)
+    #print('board and channel = ',board,channel)
     brd_str = str(board)
     if channel <= 9:
         chn_str = '0' + str(channel)

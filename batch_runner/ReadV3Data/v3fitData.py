@@ -116,28 +116,32 @@ class V3FITData(object):
         self.lif_sigma =[]
         self.lif_rc =[]
         self.lif_zc =[]
+        self.lif_arz=[]
     
-    def V3FITmoveToClass(self,shot,parsedLine,shotData,dataNames):
-        print("==============================================================")
-        print("in V3FITmoveToClass")
-        print(parsedLine)
+    def V3FITmoveToClass(self,shot,parsedLine,shotData,dataNames,debug):
+        if debug:
+            print("==========================================================")
+            print("in V3FITmoveToClass")
+            print(parsedLine)
         # remove 'class'
         removeItems=['class','v3fit_data']
         for item in removeItems:
             while item in parsedLine: parsedLine.remove(item)
         
-        print(parsedLine)
+        if debug: print(parsedLine)
         
         for v in parsedLine:
-            print("")
-            print ("searching for data name:",v)
+            if debug: 
+                print("")
+                print ("searching for data name:",v)
             if v in dataNames:
                 idx=dataNames.index(v)
-                print("found data %s at %d of %d" % (v,idx,len(shotData)))
+                if debug:
+                    print("found data %s at %d of %d" % (v,idx,len(shotData)))
                 data=shotData[idx]
-                print(data)
+                if debug: print(data)
                 if type(data) is list:
-                    print(" this is a list of length",len(data))
+                    if debug: print(" this is a list of length",len(data))
                     averageDataArray=[]
                     for item in data:
                         averageData=findAverageValues(item,shot)

@@ -1,5 +1,6 @@
 # --------------------------------------
 # ReadV3Config - Reads in the V3Config file
+#                Run after ReadV3Data
 # 
 # BatchRunner Python project
 # 
@@ -9,14 +10,18 @@
 # Returns:
 #
 # Example:
-#
-# Also defines:
+# 
+# Defines:
+#     ReadV3Config(bfc,vmecData,v3fitData,debug)
 #   
-# To do:
+# 
 # 
 #	
 # Greg Hartwell
 # 2017-11-27
+#
+# 2020-7-28 - Added debug input to print messages only when in debug=True 
+#           mode
 #----------------------------------------------------------------------------
 
 
@@ -24,14 +29,15 @@ from vmecData import VMECData
 from v3fitData import V3FITData
 
 
-def ReadV3Config(bfc,vmecData,v3fitData):
+def ReadV3Config(bfc,vmecData,v3fitData,debug):
     
 #    V3FITclassData=V3FITData()
     
 
-    print("==============================================================")
-    print("Reading V3FIT CONFIG FILE")
-    print("==============================================================")
+    if debug:
+        print("==============================================================")
+        print("Reading V3FIT CONFIG FILE")
+        print("==============================================================")
     
     inVMEC=False
     inV3FIT=False
@@ -45,7 +51,7 @@ def ReadV3Config(bfc,vmecData,v3fitData):
     file=bfc.v3configFile.strip('\n')
     with open(file) as fp:
         for line in fp:
-            print(line)
+            if debug: print(line)
             if "BEGIN".lower() in line.lower():
                 if "VMEC".lower() in line.lower(): 
                     inVMEC=True
@@ -101,9 +107,9 @@ def ReadV3Config(bfc,vmecData,v3fitData):
                 d2=line.find(')')
                 if d1 != -1 and d2 != -1:
                     line=line[:d1]+line[d2+1:]
-                print(line)
+                if debug: print(line)
                 parts=line.split(' ')
-                print('parts = ',parts)
+                if debug: print('parts = ',parts)
                 if len(parts)!= 1:
                     if len(parts) > 2:
                         value=parts[1:]

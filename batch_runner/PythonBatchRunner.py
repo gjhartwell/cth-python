@@ -16,7 +16,7 @@ progress
     
 
 
-    runBatchMain (around line 176) is area where code runs
+    runBatchMain (around line 186) is area where code runs
     
     Test_ReadV3Data is a test program to read the batch, v3data and v3config 
     files
@@ -39,15 +39,13 @@ progress
 
 import tkinter as tk
 from chooseBatchFile import chooseBatchFile
-from readBatchFile import BatchContents
-from makeReconDirs import makeReconDirs
+from reconRunner import reconRunner
 
 class Server(object):
     def __init__(self):
-        self.address="131.204.212.162"
         self.address="recon2.physics.auburn.edu"
-        self.port=2003
-        self.timeout=120
+        self.port=2001
+        self.timeout=300
     
     def print(self):
         print("Host    - ",self.address)
@@ -190,9 +188,7 @@ class BatchRunner(tk.Frame):
             print("Bad inputs - Need a dialog")
         else:
             print(self.batchFileName)
-            bfc=BatchContents(self.batchFileName)
-            bfc.readBatchFile()
-            makeReconDirs(bfc)
+            reconRunner(self.batchFileName,self.server)
             
     def checkPBREntries(self):  
         #check entries given by the Python Batch Runner GUI

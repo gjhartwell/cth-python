@@ -4,21 +4,17 @@
 # BatchRunner Python project
 # 
 #
-# Parameters:
-#	 
-# Returns:
-#
-# Example:
-#
-# Also defines:
+# Defines:
 #   BatchContents class
 #   Shot_Times class
-#
 #   ParseLine
 #
 # Greg Hartwell
 # 2017-11-21
+# Last Modified 2020-08-04 GH
 #----------------------------------------------------------------------------
+
+import os
 
 class BatchContents(object):
     
@@ -53,7 +49,7 @@ class BatchContents(object):
     def count(self):
         return len(self.shot_time_array)
     
-    def readBatchFile(self):
+    def readBatchFile(self,debug):
         
         shotTimeArray=[]
         with open(self.filename) as fp:
@@ -81,7 +77,28 @@ class BatchContents(object):
                                     else:
                                         #add time to last entry
                                         shotTimeArray[-1].addtime(array[0]) 
-        self.shot_time_array=shotTimeArray                             
+        self.shot_time_array=shotTimeArray   
+
+    def makeReconDirs(self):   
+        dirname=os.path.dirname(os.path.abspath(self.filename))
+        
+        if dirname != '':
+            # move to the base directory
+            os.chdir(dirname)
+            
+            # get the list of shots
+            # a directory is created for each shot
+            shotTimeArray=self.getShotTimeArray()
+            
+            #create an array of directories
+            self.directoryArray=[]
+            for shot in shotTimeArray:
+                newpath=os.path.join(dirname,str(shot.shotnumber))
+                self.directoryArray.append(newpath)
+                # if directories do not exist, create them
+                if not os.path.exists(newpath):
+                    os.makedirs(newpath)
+            
 #------------------------------------------------------------------
 
 class Shot_Times(object):

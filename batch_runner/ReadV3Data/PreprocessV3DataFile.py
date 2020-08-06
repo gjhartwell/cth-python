@@ -12,9 +12,10 @@
 # Greg Hartwell
 #
 # 2017-11-27
+# 2020-07-28 added debug flag to print diagnostic information
 #------------------------------------------------------------------
 
-def PreprocessV3DataFile(filein):
+def PreprocessV3DataFile(filein,debug):
     # first pass
     # remove '#' comments
     filein=filein.strip('\n')
@@ -53,7 +54,7 @@ def PreprocessV3DataFile(filein):
     inPStack=False
     inBStack=False
     for line in lines:
-        print(line)
+        if debug: print(line)
         line=line.replace('LOAD_CHANNEL_NUMBER','LOAD_CHANNEL_NUMBER ')
         line=line.replace('LOAD_CHANNEL(','LOAD_CHANNEL (')
         line=line.replace('MULTIPLY','MULTIPLY ')
@@ -68,7 +69,7 @@ def PreprocessV3DataFile(filein):
             if inPStack and numParenthesis==0:
                 inPStack=False
                 stack.reverse()
-                print("stack is ",stack)
+                if debug: print("stack is ",stack)
                 newline=[]
                 for line in stack:
                     chars=list(line)
@@ -80,12 +81,12 @@ def PreprocessV3DataFile(filein):
                 #remove extra white space
                 newline=' '.join(newline.split())
                 newline=newline+'\n'
-                print('newline is ',newline)
+                if debug: print('newline is ',newline)
                 newlines+=[newline]
         
         elif lastPrintableChar(line) == "{":
             numBrackets+=1
-            print("Brackets ",numBrackets)
+            if debug: print("Brackets ",numBrackets)
             inBStack=True
             stack.insert(0,line)
         elif inBStack:   
@@ -94,7 +95,7 @@ def PreprocessV3DataFile(filein):
             if inBStack and numBrackets==0:
                 inBStack=False
                 stack.reverse()
-                print("stack is ",stack)
+                if debug: print("stack is ",stack)
                 newline=[]
                 for line in stack:
                     chars=list(line)
@@ -106,7 +107,7 @@ def PreprocessV3DataFile(filein):
                 #remove extra white space
                 newline=' '.join(newline.split())
                 newline=newline+'\n'
-                print('newline is ',newline)
+                if debug: print('newline is ',newline)
                 newlines+=[newline]
         else:        
             newlines+=[line]
@@ -117,10 +118,11 @@ def PreprocessV3DataFile(filein):
     for line in newlines:
         fout2.write(line)    
     fout2.close()
-    print("==================================================================")
-    print("FINISHED PREPROCESSING")
-    print("==================================================================")
-    print("")
+    if debug: 
+        print("==============================================================")
+        print("FINISHED PREPROCESSING")
+        print("==============================================================")
+        print("")
     
     return fileout2
 

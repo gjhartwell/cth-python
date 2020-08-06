@@ -29,6 +29,7 @@ from v3fitData import step_types,rp_types,rp_range_types,signal_types,\
 class ReconstructionString(object):
     
     def __init__(self,index):
+        # index is the index of the time array
         # the Reconstruction code assumes that filetype header
         # will be vmec or v3fit
         # errors will occur if this is not the case
@@ -200,14 +201,14 @@ class ReconstructionString(object):
 # ----------------------------------------------------------------------------
  
     def writeV3FITHeader(self,shotNumber,shotTime):
-        print("writing V3FIT Header")
+        #print("writing V3FIT Header")
         filetype='v3fit'
         self.addString("File Type",filetype)
         self.addInt32("Shot Number",shotNumber)
         self.addDouble("Time Slice",shotTime)  
         
     def writeV3FITControls(self,v3fitInputs):
-        print("Writing V3FIT Controls")
+        #print("Writing V3FIT Controls")
         self.addComment("Reconstruction Controls")
         self.addString("my_task","reconstruct_a1")
         self.addInt64("nrstep",v3fitInputs.nrstep)
@@ -222,21 +223,21 @@ class ReconstructionString(object):
         
         
     def writeV3FITModels(self,v3fitInputs):
-        print("Writing V3FIT Models")
+        #print("Writing V3FIT Models")
         self.addComment("Model Specifications")
 
     def writeV3FITDerivedParameters(self,v3fitInputs):
-        print("Writing V3FIT Derived Parameters")
+        #print("Writing V3FIT Derived Parameters")
         self.addComment("Derived Parameters")
         self.addInt32("n_dp",v3fitInputs.n_dp)
         
     def writeV3FITReconParameters(self,v3fitInputs):
-        print("Writing V3FIT Recon Parameters")
+        #print("Writing V3FIT Recon Parameters")
         self.addComment("Reconstruction Parameters")
         self.addInt32("n_rp",v3fitInputs.n_rp)
-        print("n_rp = ",v3fitInputs.n_rp)
+        #print("n_rp = ",v3fitInputs.n_rp)
         for rp in range(v3fitInputs.n_rp):
-            print("rp = ",rp)
+            #print("rp = ",rp)
             self.addString(self.formatTo1D("rp_type",rp+1), \
                            rp_types[int(v3fitInputs.rp_type[rp])])
             self.addDouble(self.formatTo1D("rp_vrnc",rp+1), \
@@ -289,41 +290,171 @@ class ReconstructionString(object):
                 
     def writeV3FITBarLimiterSignal(self,v3fitInputs,idx):
         self.addComment("Bar Limiter")
-        print("writing V3FIT Bar Limiter Signals")
-        #self.addDouble(0.0)
-        self.addInt32(self.formatTo1D("lif_on_edge",idx))  
+        #print("     writing V3FIT Bar Limiter Signals")
+        #print('idx =',idx)
+        writeidx=idx+1
+        self.addBool(self.formatTo1D("lif_on_edge",writeidx),
+                      bool(int(v3fitInputs.lif_on_edge[idx])))
+        
+        if isinstance(v3fitInputs.lif_phi_degree[idx],str):
+            #only 1 element
+            self.addInt32(self.formatTo1D("n_phi_lif",writeidx),1)
+            self.addDouble(self.formatToND("lif_phi_degree",[writeidx,-1]),
+                          float(v3fitInputs.lif_phi_degree[idx]))
+        else: #it should be an array
+            self.addInt32(self.formatTo1D("n_phi_lif",writeidx),
+                          len(v3fitInputs.lif_phi_degree[idx]))
+            tempName=self.formatToND("lif_phi_degree",[writeidx,-1])
+            tempArray=[]
+            for value in v3fitInputs.lif_phi_degree[idx]:
+                #print('value=',value)
+                tempValue=float(value)
+                tempArray+=[tempValue]   
+                #print(tempName,tempArray)
+            self.addDoubleArray1D(tempName,tempArray)
+        self.addDouble(self.formatTo1D("lif_sigma",writeidx),
+                      float(v3fitInputs.lif_sigma[idx]))
+        self.addDouble(self.formatTo1D("lif_rc",writeidx),
+                      float(v3fitInputs.lif_rc[idx]))
+        self.addDouble(self.formatTo1D("lif_zc",writeidx),
+                      float(v3fitInputs.lif_zc[idx]))
+        self.addInt32(self.formatTo1D('sdo_w_spec_imin', writeidx), 
+                      v3fitInputs.sdo_w_spec_imin[idx])
+        self.addInt32(self.formatTo1D('sdo_w_spec_imax', writeidx), 
+                      v3fitInputs.sdo_w_spec_imax[idx])
+        self.addDouble(self.formatTo1D('sdo_w_spec_weight', writeidx), 
+                      v3fitInputs.sdo_w_spec_weight[idx])
+        self.addDouble(self.formatToND('lif_arz', [writeidx,0,1]),
+                      float(v3fitInputs.lif_rc[idx])-float(v3fitInputs.r[idx]))
+        self.addDouble(self.formatToND('lif_arz', [writeidx,1,0]),
+                      float(v3fitInputs.lif_zc[idx])-float(v3fitInputs.z[idx]))        
+       
+        
+    def writeV3FITCircularLimiterSignal(self,v3fitInputs,idx):
+        self.addComment("Circular Limiter")
+        #print("     writing V3FIT Circular Limiter Signals")
+        #print('idx =',idx)
+        writeidx=idx+1
+        self.addBool(self.formatTo1D("lif_on_edge",writeidx),
+                      bool(int(v3fitInputs.lif_on_edge[idx])))
+        
+        if isinstance(v3fitInputs.lif_phi_degree[idx],str):
+            #only 1 element
+            self.addInt32(self.formatTo1D("n_phi_lif",writeidx),1)
+            self.addDouble(self.formatToND("lif_phi_degree",[writeidx,-1]),
+                          float(v3fitInputs.lif_phi_degree[idx]))
+        else: #it should be an array
+            self.addInt32(self.formatTo1D("n_phi_lif",writeidx),
+                          len(v3fitInputs.lif_phi_degree[idx]))
+            tempName=self.formatToND("lif_phi_degree",[writeidx,-1])
+            tempArray=[]
+            for value in v3fitInputs.lif_phi_degree[idx]:
+                #print('value=',value)
+                tempValue=float(value)
+                tempArray+=[tempValue]   
+                #print(tempName,tempArray)
+            self.addDoubleArray1D(tempName,tempArray)
+        self.addDouble(self.formatTo1D("lif_sigma",writeidx),
+                      float(v3fitInputs.lif_sigma[idx]))
+        self.addDouble(self.formatTo1D("lif_rc",writeidx),
+                      float(v3fitInputs.lif_rc[idx]))
+        self.addDouble(self.formatTo1D("lif_zc",writeidx),
+                      float(v3fitInputs.lif_zc[idx]))
+        self.addInt32(self.formatTo1D('sdo_w_spec_imin', writeidx), 
+                      v3fitInputs.sdo_w_spec_imin[idx])
+        self.addInt32(self.formatTo1D('sdo_w_spec_imax', writeidx), 
+                      v3fitInputs.sdo_w_spec_imax[idx])
+        self.addDouble(self.formatTo1D('sdo_w_spec_weight', writeidx), 
+                      v3fitInputs.sdo_w_spec_weight[idx])
+        self.addDouble(self.formatToND('lif_arz', [writeidx,0,0]),
+                -float(v3fitInputs.radius[idx-v3fitInputs.nBarLimiters])**2)
+        self.addDouble(self.formatToND('lif_arz', [writeidx,2,0]),1)
+        self.addDouble(self.formatToND('lif_arz', [writeidx,0,2]),1)
     
-    def writeV3FITCircularLimiterSignal(self,v3fitInputs):
-        self.addComment("Bar Limiter")
-        print("writing V3FIT Bar Limiter Signals")
-        for idx in range(v3fitInputs.numberLimiters):
-            self.addInt32(self.formatTo1D("lif_on_edge",idx))  
-
-                
+    def writeCombinationOfSignals(self,v3fitInputs,idx):
+        self.addComment("Combination of Signals")
+        #print("     writing Combinations of Signals")
+        #print('idx =',idx)
+        writeidx=idx+1
+        self.addString(self.formatTo1D('coosig_name',writeidx),
+                       v3fitInputs.coosig_name[idx])
+        self.addString(self.formatTo1D('coosig_type',writeidx),
+                       v3fitInputs.coosig_type[idx])
+        self.addString(self.formatTo1D('coosig_units',writeidx),
+                       v3fitInputs.coosig_units[idx])
+        if isinstance(v3fitInputs.coosig_indices[idx],str):
+            #only 1 element
+            self.addInt32(self.formatTo1D("coosig_indices",writeidx),
+                          v3fitInputs.coosig_indices[idx])
+        else: #it should be an array
+            tempName=self.formatToND("coosig_indices",[writeidx,-1])
+            tempArray=[]
+            for value in v3fitInputs.coosig_indices[idx]:
+                #print('value=',value)
+                tempValue=int(value)
+                tempArray+=[tempValue]   
+                #print(tempName,tempArray)
+            self.addInt32Array1D(tempName,tempArray)
+        if isinstance(v3fitInputs.coosig_coeff[idx],str):
+            #only 1 element
+            self.addInt32(self.formatTo1D("coosig_coeff",writeidx),
+                          v3fitInputs.coosig_coeff[idx])
+        else: #it should be an array
+            tempName=self.formatToND("coosig_coeff",[writeidx,-1])
+            tempArray=[]
+            for value in v3fitInputs.coosig_coeff[idx]:
+                #print('value=',value)
+                tempValue=float(value)
+                tempArray+=[tempValue]   
+                #print(tempName,tempArray)
+            self.addDoubleArray1D(tempName,tempArray)
+        self.addInt32(self.formatTo1D("sdo_s_spec_imin",writeidx), 
+                      v3fitInputs.sdo_s_spec_imin[idx])
+        self.addInt32(self.formatTo1D("sdo_s_spec_imax",writeidx), 
+                      v3fitInputs.sdo_s_spec_imax[idx])
+        self.addDouble(self.formatTo1D("sdo_s_spec_floor",writeidx), 
+                      float(v3fitInputs.sdo_s_spec_floor[idx]))
+        self.addDouble(self.formatTo1D("sdo_s_spec_fraction",writeidx), 
+                      float(v3fitInputs.sdo_s_spec_fraction[idx]))
+            
+    def writeTotalSignals(self,v3fitInputs):
+        self.addComment('Total Signals')
+        self.addInt32('n_lif',
+                      v3fitInputs.nBarLimiters+v3fitInputs.nCircularLimiters)
+        self.addInt32('n_coosig',len(v3fitInputs.coosig_name))
+        self.addInt32('n_prior', 0)
+        self.addInt32('n_sdata_o', v3fitInputs.n_signals)
+        
     def writeV3FITReconSignals(self,v3fitInputs):
-        print("writing V3FIT Recon Signals")
+        #print("writing V3FIT Recon Signals")
         self.addComment("Reconstruction Signals")
+        idx=0
         for signal in v3fitInputs.signalNames:
-            idx=v3fitInputs.signalNames.index(signal)
             if signal.lower() == 'Bar Limiter'.lower():
                 self.writeV3FITBarLimiterSignal(v3fitInputs,idx)
             elif signal.lower() == 'Circular Limiter'.lower():
-                self.writeV3FITCircularLimiterSignal(v3fitInputs)
-        
+                self.writeV3FITCircularLimiterSignal(v3fitInputs,idx)
+            idx+=1
+        # handle combinations of signals
+        idx=0
+        for coosigs in v3fitInputs.coosig_name:
+            self.writeCombinationOfSignals(v3fitInputs,idx)
+    
     
     def writeV3FITParameters(self,v3fitInputs):
         self.writeV3FITControls(v3fitInputs)
         self.writeV3FITModels(v3fitInputs)
         self.writeV3FITDerivedParameters(v3fitInputs)
         self.writeV3FITReconParameters(v3fitInputs)
-        #self.writeV3FITReconSignals(v3fitInputs)
+        self.writeV3FITReconSignals(v3fitInputs)
+        self.writeTotalSignals(v3fitInputs)
         
 # -------------------------------------------------------------------------
 #           Start of writing VMEC Parameters 
 # -------------------------------------------------------------------------        
     
     def writeVMECHeader(self,shotNumber,shotTime):
-        print("writing VMEC header")
+        #print("writing VMEC header")
         filetype='vmec'
         self.addString("File Type",filetype)
         self.addInt32("Shot Number",shotNumber)
@@ -331,37 +462,45 @@ class ReconstructionString(object):
 
     def writeVMECExecutionParameters(self,vmecInputs):
         self.addComment("VMEC Exectuion Parameters")
-        self.addString("MGRID_FILE",vmecInputs.MGRID_FILE)
-        self.addBool("LFORBAL",vmecInputs.LFORBAL)
-        self.addBool("LFREEB",vmecInputs.LFREEB)
-        self.addDouble("DELT",vmecInputs.DELT)
-        self.addDouble("TCON0",vmecInputs.TCON0)
-        self.addInt32("NFP",vmecInputs.NFP)
-        self.addInt32Array1D("NS_ARRAY",vmecInputs.NS_ARRAY)
-        self.addDoubleArray1D("FTOL_ARRAY",vmecInputs.FTOL_ARRAY)
-        self.addInt32("NITER",vmecInputs.NITER)
-        self.addInt32("NSTEP",vmecInputs.NSTEP)
-        self.addInt32("NTOR",vmecInputs.NTOR)
-        self.addInt32("MPOL",vmecInputs.MPOL)
-        self.addInt32("NZETA",vmecInputs.NZETA)
-        self.addInt32("NVACSKIP",vmecInputs.NVACSKIP)
-        self.addBool("LASYM",vmecInputs.LASYM)
-        #self.addInt32("OMP_NUM_THREADS",vmecInputs.OMP_NUM_TREADS)
-        self.addInt32("OMP_NUM_THREADS",1)
+        self.addString("MGRID_FILE",vmecInputs.mgrid_file)
+        self.addBool("LFORBAL",bool(int(vmecInputs.lforbal)))
+        self.addBool("LFREEB",bool(int(vmecInputs.lfreeb)))
+        self.addDouble("DELT",vmecInputs.delt)
+        self.addDouble("TCON0",vmecInputs.tcon0)
+        self.addInt32("NFP",vmecInputs.nfp)
+        self.addInt32("NS_ARRAY",int(vmecInputs.ns_array))
+        self.addDouble("FTOL_ARRAY",float(vmecInputs.ftol_array))
+        self.addInt32("NITER",vmecInputs.niter)
+        self.addInt32("NSTEP",vmecInputs.nstep)
+        self.addInt32("NTOR",vmecInputs.ntor)
+        self.addInt32("MPOL",vmecInputs.mpol)
+        self.addInt32("NZETA",vmecInputs.nzeta)
+        self.addInt32("NVACSKIP",vmecInputs.nvacskip)
+        self.addBool("LASYM",bool(int(vmecInputs.lasym)))
+        self.addInt32("OMP_NUM_THREADS",vmecInputs.omp_num_threads)
+        #self.addInt32("OMP_NUM_THREADS",1)
     
     def writeVMECCoilCurrents(self,vmecInputs):
         self.addComment("Coil Currents. (HF, TVF, OH, SVF, RF, TF, VV, HCF")
         
+        # coil_currents=[vmecInputs.hf_ovf_current[self.idx],\
+        #                vmecInputs.tvf_current[self.idx],\
+        #                vmecInputs.oh_current[self.idx],\
+        #                vmecInputs.svf_current[self.idx],\
+        #                vmecInputs.rf_ef_current[self.idx],\
+        #                vmecInputs.tf_current[self.idx],\
+        #                vmecInputs.vv_current[self.idx],\
+        #                vmecInputs.hcf_current[self.idx]]
         coil_currents=[vmecInputs.hf_ovf_current[self.idx],\
                        vmecInputs.tvf_current[self.idx],\
                        vmecInputs.oh_current[self.idx],\
-                       vmecInputs.svf_current[self.idx],\
-                       vmecInputs.rf_ef_current[self.idx],\
+                       0.0,\
+                       0.0,\
                        vmecInputs.tf_current[self.idx],\
-                       vmecInputs.vv_current[self.idx],\
-                       vmecInputs.hcf_current[self.idx]]
+                       0.0,\
+                       0.0]
         # setting the RF current to zero if LASYM is true    
-        if vmecInputs.LASYM:
+        if bool(vmecInputs.lasym):
             coil_currents[4]=0.0
             
         self.addDoubleArray1D("EXTCUR",coil_currents)
@@ -388,7 +527,8 @@ class ReconstructionString(object):
         self.addInt32("NCURR",vmecInputs.ncurr)
         self.addDouble("CURTOR",vmecInputs.curtor[self.idx])
         self.addDoubleArray1D("AC",vmecInputs.ac)
-        self.addString("PCURR_TYPE",vmecInputs.pcurr_type)
+        self.addString("PCURR_TYPE",
+                       vmecInputs.pcurr_types[int(vmecInputs.pcurr_type)])
         self.addDoubleArray1D("ac_aux_s",vmecInputs.ac_aux_s)
         self.addDoubleArray1D("ac_aux_f",vmecInputs.ac_aux_f)
     
@@ -397,7 +537,8 @@ class ReconstructionString(object):
         self.addDouble("SPRES_PED",vmecInputs.spres_ped)   
         self.addDoubleArray1D("AM",vmecInputs.am)
         self.addDouble("PRES_SCALE",vmecInputs.pres_scale[self.idx])
-        self.addString("PMASS_TYPE",vmecInputs.pmass_type)
+        self.addString("PMASS_TYPE",
+                       vmecInputs.pmass_types[int(vmecInputs.pmass_type)])
         self.addDoubleArray1D("am_aux_s",vmecInputs.am_aux_s)
         self.addDoubleArray1D("am_aux_f",vmecInputs.am_aux_f)
         
@@ -416,11 +557,13 @@ class ReconstructionString(object):
 # testing
 
 #
-#shotNumber=16121246
-#time=1.61
-#filetype='vmec'
-#rs=ReconstructionString(0)
-#rs.writeVMECHeader(shotNumber,time)
+# shotNumber=16121246
+# time=1.61
+# filetype='vmec'
+# rs=ReconstructionString(0)
+# rs.writeVMECHeader(shotNumber,time)
+# string='/home/v3fit/public/input_files/mgrid/mgrid_cth.18b.mo.f5sa_ec6a.nc'
+# rs.addString('MGRID_FILE',string)
 #rs.addComment("This is a test")
 #rs.addBool("T or F",True)
 #rs.addInt8("INT8",8)
