@@ -72,7 +72,7 @@ class BatchRunner(tk.Frame):
         self.batchFileName=""
         self.server=Server()
         self.dataTimeInterval=DataTimeInterval()
-        self.numberOutputFiles=5
+        self.numberOutputFiles=0
         self.userName="java-client"
         self.dataHost="MDS"
         self.autoShotTime=True

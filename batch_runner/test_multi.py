@@ -8,7 +8,7 @@ Created on Thu Aug  6 14:41:39 2020
 import multiprocessing as mp
 import os
 
-#print('there are %s cores' %mp.cpu_count())
+print('there are %s cores' %mp.cpu_count())
 def worker(num):
     print('worker',num)
     print('parent process:', os.getppid())
