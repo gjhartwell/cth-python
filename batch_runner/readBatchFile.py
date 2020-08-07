@@ -93,12 +93,13 @@ class BatchContents(object):
             #create an array of directories
             self.directoryArray=[]
             for shot in shotTimeArray:
-                newpath=os.path.join(dirname,str(shot.shotnumber))
-                self.directoryArray.append(newpath)
-                # if directories do not exist, create them
-                if not os.path.exists(newpath):
-                    os.makedirs(newpath)
-            
+                for time in shot.time:
+                    newpath=os.path.join(dirname,str(shot.shotnumber))
+                    self.directoryArray.append(newpath)
+                    # if directories do not exist, create them
+                    if not os.path.exists(newpath):
+                        os.makedirs(newpath)
+                
 #------------------------------------------------------------------
 
 class Shot_Times(object):

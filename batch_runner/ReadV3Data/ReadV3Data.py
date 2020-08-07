@@ -21,7 +21,7 @@
 #from ChannelInfo import *
     # defines channelToBoard
     # defines class ChannelInfo 
-from cthmds import CTHData
+from cthmds.CTHdata import CTHData
 import numpy as np
 from vmecData import VMECData
 from v3fitData import V3FITData
