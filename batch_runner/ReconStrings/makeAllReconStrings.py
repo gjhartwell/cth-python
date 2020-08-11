@@ -13,7 +13,7 @@ def makeAllReconStrings(bfc,ppfile):
     
     allReconStrings=[]
     for shotidx,shot in enumerate(bfc.shot_time_array):
-
+        print("in makeAllReconStrings")
         print(shot.shotnumber)
         print(shot.time) # this is an array of times
         print(shot.dt)
@@ -26,8 +26,8 @@ def makeAllReconStrings(bfc,ppfile):
     
         for idx,time in enumerate(shot.time):
     
-            print('idx is',idx,' and time is',shot.time[idx])
-            print('creating reconstruction string')
+            #print('idx is',idx,' and time is',shot.time[idx])
+            #print('creating reconstruction string')
             rs=ReconstructionString(idx)
             rs.writeVMECHeader(shot.shotnumber,shot.time[idx])
             rs.writeVMECParameters(vmecClassData)

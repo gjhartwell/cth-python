@@ -90,17 +90,27 @@ def doreconRunner(file,server):
 
 
     allReconStrings=makeAllReconStrings(bfc,ppfile)
-    dirname=bfc.directoryArray[0]
+    dirnames=bfc.directoryArray
+    return dirnames,allReconStrings
+
+
     
-    if __name__ == '__main__':
-        for idx,rs in enumerate(allReconStrings):    
-            print('sending reconstruction string',idx)
-            sendToServer(server,rs,dirname)
-            p = mp.Process(target=sendToServer,args=(server,rs,dirname,))
-            p.start()
-            p.join()
+if __name__ == '__main__':
+    reconserver=Server()
+    file="C:\\Users\\hartwgj\\Desktop\\TestReconFiles\\batchfile.cthsl"
+    dirnames,allReconStrings=doreconRunner(file,reconserver)
+    
+    jobs=[]
+    for idx,rs in enumerate(allReconStrings):
+        dirname=dirnames[idx]
+        print('sending reconstruction string',idx,'directory will be',dirname)
+        p = mp.Process(target=sendToServer,args=(reconserver,rs,dirname))
+        jobs.append(p)
+    for j in jobs:
+        j.start()
+    for j in jobs:
+        j.join()
+    print("finished running")
             
         
-reconserver=Server()
-file="C:\\Users\\hartwgj\\Desktop\\TestReconFiles\\batchfile.cthsl"
-doreconRunner(file,reconserver)
+
