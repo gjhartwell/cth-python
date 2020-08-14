@@ -1,0 +1,7 @@
+
+Greg Hartwell - Aug 13, 2020
+
+Need:
+	GUI interface
+	A command line interface
+	An inline code interface
