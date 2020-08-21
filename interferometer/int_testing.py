@@ -5,7 +5,7 @@ Created on Wed Jul  1 08:42:06 2020
 @author: hartwgj
 """
 
-from interferometer_processing import CTHintfrm_1mm
+#from interferometer_processing import CTHintfrm_1mm
 import scipy.constants
 from scipy import fft,ifft
 from cthmds import CTHData
@@ -19,8 +19,8 @@ def getintdata(shotnum,chord):
     
     intsig=CTHData('intgis')
     sawsig=CTHData('intsaw')
-    sawsig.get_data(server='neil',shotnum=shotnum,board_channel=sawtooth_ch[chord-1])
-    intsig.get_data(server='neil',shotnum=shotnum,board_channel=data_ch[chord-1])
+    sawsig.get_data(server='mds',shotnum=shotnum,board_channel=sawtooth_ch[chord-1])
+    intsig.get_data(server='mds',shotnum=shotnum,board_channel=data_ch[chord-1])
     
     return sawsig,intsig
 
