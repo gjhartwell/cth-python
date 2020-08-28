@@ -7,7 +7,7 @@ Created on Thu Feb 15 10:12:09 2018
 Last modified Jun 25, 2020
 """
 
-from findAverageValues import findAverageValues
+from readV3Data.findAverageValues import findAverageValues
 
 rp_types=["ac","ac_aux_s","ac_aux_f",\
          "ai","ai_aux_s","ai_aux_f", \

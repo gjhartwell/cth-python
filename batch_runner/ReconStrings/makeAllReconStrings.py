@@ -5,9 +5,9 @@ Created on Thu Aug  6 16:27:51 2020
 @author: hartwgj
 """
 
-from ReadV3Data.ReadV3Data import ReadV3DataFile
-from ReadV3Config import ReadV3Config
-from ReconstructionString import ReconstructionString
+from readV3Data.readV3Data import ReadV3DataFile
+from readV3Data.readV3Config import ReadV3Config
+from reconStrings.ReconstructionString import ReconstructionString
 
 def makeAllReconStrings(bfc,ppfile):
     

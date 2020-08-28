@@ -23,7 +23,7 @@ print - prints the string
 """
 
 from struct import pack
-from v3fitData import step_types,rp_types,rp_range_types,signal_types,\
+from readV3Data.v3fitData import step_types,rp_types,rp_range_types,signal_types,\
             derived_parameters
 
 class ReconstructionString(object):
@@ -483,22 +483,15 @@ class ReconstructionString(object):
     def writeVMECCoilCurrents(self,vmecInputs):
         self.addComment("Coil Currents. (HF, TVF, OH, SVF, RF, TF, VV, HCF")
         
-        # coil_currents=[vmecInputs.hf_ovf_current[self.idx],\
-        #                vmecInputs.tvf_current[self.idx],\
-        #                vmecInputs.oh_current[self.idx],\
-        #                vmecInputs.svf_current[self.idx],\
-        #                vmecInputs.rf_ef_current[self.idx],\
-        #                vmecInputs.tf_current[self.idx],\
-        #                vmecInputs.vv_current[self.idx],\
-        #                vmecInputs.hcf_current[self.idx]]
         coil_currents=[vmecInputs.hf_ovf_current[self.idx],\
-                       vmecInputs.tvf_current[self.idx],\
-                       vmecInputs.oh_current[self.idx],\
-                       0.0,\
-                       0.0,\
-                       vmecInputs.tf_current[self.idx],\
-                       0.0,\
-                       0.0]
+                        vmecInputs.tvf_current[self.idx],\
+                        vmecInputs.oh_current[self.idx],\
+                        vmecInputs.svf_current[self.idx],\
+                        vmecInputs.rf_ef_current[self.idx],\
+                        vmecInputs.tf_current[self.idx],\
+                        vmecInputs.vv_current[self.idx],\
+                        vmecInputs.hcf_current[self.idx]]
+        
         # setting the RF current to zero if LASYM is true    
         if bool(vmecInputs.lasym):
             coil_currents[4]=0.0

@@ -22,7 +22,8 @@
 #----------------------------------------------------------------------------
 
 import matplotlib.pyplot as plt
-import cthmds
+from cthconnect import cthconnect 
+from cthopen import cthopen
 from timeSubset import timeSubset
 
 #from sys import argv
@@ -32,11 +33,11 @@ from timeSubset import timeSubset
 def getIp(shotnum,server):
     if not server: 
         print('server = ',server)
-        c=cthmds.cthconnect("mds")
+        c=cthconnect("mds")
     else:
-        c=cthmds.cthconnect(server)
+        c=cthconnect(server)
 	
-    cthmds.cthopen(c,shotnum)
+    cthopen(c,shotnum)
     Ip=c.get('\\I_p')
     time=c.get('dim_of(\\I_p)')
     c.closeAllTrees
@@ -46,11 +47,14 @@ def getIp(shotnum,server):
 	
     print('maximum plasma current: ',max(Ip2))
 
-    plt.plot(time2,Ip2)
+    plt.plot(time2,Ip2/1000)
+    plt.title("Plasma Current - shot 20032705")
+    plt.xlabel('time(s)')
+    plt.ylabel('Plasma Current (kA)')
     plt.show()
 
 #getIp(20032705,"Neil")
-#getIp(20032705,"mds")
+getIp(20032705,"mds")
 
 #-----------------------------------------------------------------------------
 

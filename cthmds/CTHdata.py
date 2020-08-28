@@ -16,8 +16,8 @@
 #------------------------------------------------------------------
 
 import numpy as np
-from cthconnect import cthconnect
-from tree_from_shot import tree_from_shot
+from cthmds.cthconnect import cthconnect
+from cthmds.tree_from_shot import tree_from_shot
 
 #This CTHData class is more encompasing than the ReconCTHData
 class CTHData(object):
@@ -287,7 +287,7 @@ def cthdata_board_channel(self,mdsconn,board,channel):
     self.gain=gain
 # Get the data
     if mdsconn.get('$shot') >= 13091201:
-        data = mdsconn.get(nodename) / gain
+        data = mdsconn.get(nodename) / self.gain 
         if len(data) <= 2:
             data = None
             return

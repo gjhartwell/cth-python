@@ -25,8 +25,8 @@
 #----------------------------------------------------------------------------
 
 
-from vmecData import VMECData
-from v3fitData import V3FITData
+from readV3Data.vmecData import VMECData
+from readV3Data.v3fitData import V3FITData
 
 
 def ReadV3Config(bfc,vmecData,v3fitData,debug):
