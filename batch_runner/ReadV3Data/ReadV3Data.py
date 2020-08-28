@@ -23,8 +23,12 @@
     # defines class ChannelInfo 
 from cthmds.CTHdata import CTHData
 import numpy as np
-from vmecData import VMECData
-from v3fitData import V3FITData
+from readV3Data.vmecData import VMECData
+from readV3Data.v3fitData import V3FITData
+#from readV3Data.sgfilter import sgfilter
+from timeSubset import timeSubset
+
+import matplotlib.pyplot as plt
 
 
 #this class is similar to the CTHData class, but with less information
@@ -50,6 +54,7 @@ class ReconCTHData(object):
         
     def add(self,offset):
         self.data=self.data+offset
+
 
 def ReadV3DataFile(preProcessedFile,shot,debug):
     # This should get the data for a single shot in the batch file
@@ -155,7 +160,9 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
     for i in range(2): del values[0]
     values.reverse()
     stack=[]
-    if debug: print("In InterpretV3Data ---reversed values: ",values)
+    if debug: 
+        print("In InterpretV3Data ---reversed values: ",values)
+        print('initial stack length',len(stack))
     for v in values:
         tempdata=ReconCTHData("temp")
         if debug: 
@@ -180,6 +187,9 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
             channelData.get_data(shotnum=shot.shotnumber,channel=stack.pop(0))
             tempdata.addData(channelData.data)
             tempdata.addTaxis(channelData.taxis)
+            dataRange=tempdata.data[0:2000]
+            offset=np.sum(dataRange)/np.size(dataRange)
+            tempdata.data=np.subtract(tempdata.data,offset)
             stack.insert(0,tempdata)
         
         elif v=="LOAD_CHANNEL":
@@ -187,14 +197,17 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
             channelData.get_data(shotnum=shot.shotnumber,node=stack.pop(0))
             tempdata.addData(channelData.data)
             tempdata.addTaxis(channelData.taxis)
+            dataRange=tempdata.data[0:2000]
+            offset=np.sum(dataRange)/np.size(dataRange)
+            tempdata.data=np.subtract(tempdata.data,offset)
             stack.insert(0,tempdata)
             
         elif v=="ZERO_BEGINNING":
             if debug: print("zeroing data")
-            numStartData=1000 # number of points to use to zero data
             tempdata=stack.pop(0)
-            aveStartData=np.sum(tempdata.data[0:numStartData])/numStartData
-            tempdata.data=np.subtract(tempdata.data,aveStartData)
+            dataRange=timeSubset(tempdata.taxis,tempdata.data,1.615,1.62)
+            startValue=np.sum(dataRange)/np.size(dataRange)
+            tempdata.data=np.subtract(tempdata.data,startValue)
             stack.insert(0,tempdata)
             
         elif v == "ADD":
@@ -204,21 +217,23 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
             if (type(v1) is int or type(v1) is float) \
                                     and type(v2) is ReconCTHData:
                 if debug: print("adding an offset")
-                tempdata.addData(v2.data+v1)
+                tempdata.data=np.add(v2.data,v1)
                 tempdata.addTaxis(v2.taxis)
                 stack.insert(0,tempdata)
             elif (type(v2) is int or type(v2) is float) \
                                     and type(v1) is ReconCTHData:
                 if debug: print("adding an offset")
-                tempdata.addData(v1.data+v2)
+                tempdata.data=np.add(v1.data,v2)
                 tempdata.addTaxis(v1.taxis)
                 stack.insert(0,tempdata)
             else:
                 if debug: print("adding two arrays")
                 if len(v1.taxis) != len(v2.taxis):
                     v1.data=np.interp(v2.taxis,v1.taxis,v1.data)
-                if debug: print(len(v1.data))
-                tempdata.addData(v1.data+v2.data)
+                    if debug: print('unequal arrays lengths in ADD')
+                    if debug: print(len(v1.data),len(v2.data))
+
+                tempdata.data=np.add(v1.data,v2.data)
                 tempdata.addTaxis(v2.taxis)
                 stack.insert(0,tempdata)
 
@@ -226,7 +241,7 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
             v1=stack.pop(0)
             v2=stack.pop(0)
             if type(v2) is ReconCTHData and type(v1) is ReconCTHData:
-                tempdata.addData(v1.data-v2.data)
+                tempdata.data=np.subtract(v1.data,v2.data)
                 tempdata.addTaxis(v1.taxis)
                 stack.insert(0,tempdata)
             else:
@@ -235,6 +250,7 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
         elif v == "MULTIPLY":
             v1=stack.pop(0) # v1 is factor
             v2=stack.pop(0) # v2 is array
+            if debug: print(type(v1),type(v2))
             if type(v2) is ReconCTHData and type(v1) is float:
                 tempdata.addData(v2.data*v1)
                 tempdata.addTaxis(v2.taxis)
@@ -254,28 +270,32 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
                 stack.insert(0,tempdata)
             else:
                 print("unhandled MULTIPLY in InterpretV3Data in ReadV3Data")
-        
+
         elif v == "DOT_PRODUCT":
             # check that arrays are same size
-            if debug: print("test stack length is two", len(stack))
+            if debug: print("test stack length in DOT_PROD", len(stack))
             stack1=stack.pop(0)
             stack2=stack.pop(0)
             lenStack1=len(stack1)
             lenStack2=len(stack2)
             if debug: 
-                print("test stack length is zero", len(stack))
+                print("test stack length (should be less 2) ", len(stack))
                 print("stack item 0 length :",lenStack1)
                 print("stack item 1 length :",lenStack2)
             if lenStack1==lenStack2:
                 if debug: print("taking DOT product")
                 for v1,v2 in zip(stack1,stack2):
                     if type(v2) is ReconCTHData and type(v1) is float:
-                        tempdata.addData(v2.data*v1)
+                        tempdata=ReconCTHData('temp')
+                        tempdata.addData(v2.data)
+                        tempdata.multiply(v1)
                         tempdata.addTaxis(v2.taxis)
                         stack.insert(0,tempdata)
                         if debug: print("test stack length ", len(stack))
                     elif type(v1) is ReconCTHData and type(v2) is float:
-                        tempdata.addData(v1.data*v2)
+                        tempdata=ReconCTHData('temp')
+                        tempdata.addData(v1.data)
+                        tempdata.multiply(v2)
                         tempdata.addTaxis(v1.taxis)
                         stack.insert(0,tempdata)
                         if debug: print("test stack length ", len(stack))
@@ -287,19 +307,21 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
                     tempData.data+=stack.pop(0).data
                     if debug: print("test stack length ", len(stack))
                 if debug: print("test stack length is zero", len(stack))    
-                stack.insert(0,tempData)    
-                if debug: print("in InterpretV3Data in ReadV3Data") 
+                stack.insert(0,tempData)     
             else:
                 print("error in DOT product, arrays of different lengths")
-        
+
         elif v=="AVERAGE":
             if debug: print("Doing an average")
-            elements=len(stack)
-            tempdata=stack.pop(0)
-            while stack:
-                tempData.data+=stack.pop(0).data
-            tempData.data/=elements
-            stack.insert(0,tempData)
+            allarrays=stack.pop(0)
+            elements=len(allarrays)
+            if debug: print('elements to average',elements)
+            tempdata=np.arange(len(allarrays[0].data))*0.0
+            for idx,array in enumerate(allarrays):
+                tempdata=np.add(tempdata,array.data)
+            tempSig=allarrays[0]
+            tempSig.data=tempdata/float(elements)
+            stack.insert(0,tempSig)
             
         elif v == "ARRAY":
             #for item in stack of same type
@@ -311,6 +333,7 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
                 if debug: print("Element Type = ",type(stack[0]))
                 subStack.insert(0,stack.pop(0))
             subStack.reverse()
+            if debug: print('substack length',len(subStack))
             stack.insert(0,subStack)
             
         
@@ -319,7 +342,8 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
             if debug: print ("searching for data name:",v)
             if v in dataNames:
                 idx=dataNames.index(v)
-                if debug: print("found data %s at %d of %d" % (v,idx,len(shotData)))
+                if debug: print("found data %s at %d of %d" \
+                                % (v,idx,len(shotData)))
                 stack.insert(0,shotData[idx])
             elif 'processed' in v:
                 if debug: print("using processed data")
@@ -334,17 +358,34 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
     
     if debug: print("stack type --",type(stack[0]))
     if isinstance(stack[0],list):
-        if debug: print("Adding Array")
-        shotData.append(stack[0])
+        if debug: 
+            print("Adding Array")
+        stack0=stack[0]
+        shotData.append(stack0)
+        if debug: print("stack length",len(stack))
         
     elif isinstance(stack[0], ReconCTHData):
-        if debug: print("Adding ReconCTHData")
+        stack0=stack[0]
         data=ReconCTHData(dataName)
-        data.addData(stack[0].data)
-        data.addTaxis(stack[0].taxis)
-        if debug: print(data.getName())
+        data.addData(stack0.data)
+        data.addTaxis(stack0.taxis)
+        if data.getName() in['hf_ovf_current','tvf_current','oh_current', \
+                             'tf_current','svf_current','rf_ef_current', \
+                             'hcf_current']:
+            dataRange=timeSubset(data.taxis,data.data,0.0,0.2)
+            value=np.sum(dataRange)/np.size(dataRange)
+            data.data-=value
+        if debug: 
+            print("Adding ReconCTHData")
+            plt.plot(data.taxis,data.data)
+            plt.xlim(1.6,1.7)
+            plt.title(data.getName())
+            plt.show()
+            print(data.getName())  
+            print("stack length",len(stack))
         shotData.append(data)
-    
+
+        
     dataNames+=[dataName]
     return (shotData,dataNames)
 #-----------------------------------------------------------------------------

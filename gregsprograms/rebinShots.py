@@ -14,33 +14,35 @@ import matplotlib.pyplot as plt
 def rebinShots(shots):
     
     
-    period='month'
-
-    monthArray=[int((shots[0]-(shots[0] % 10000))/10000)]
-    narray=[0]
-    idx=0
-    for shot in shots:
-         dshot=int((shot-(shot % 10000))/10000)
-         if dshot == monthArray[idx]:
-             narray[idx]=narray[idx]+1
-         else:
-             idx=idx+1
-             monthArray.append(dshot)
-             narray.append(0) 
-             
-
-    # check month array for missing months
-    for idx in range(len(monthArray)):
-        monthArray[idx]=monthArray[idx] % 100
-    for idx in range(len(monthArray)-1):
-        if (monthArray[idx+1]-monthArray[idx] == 1) or \
-            (monthArray[idx+1]-monthArray[idx] == -11):
-            continue
-        else:
-            monthArray.insert(idx+1,monthArray[idx]+1)
-            narray.insert(idx+1,0)
+    period='year'
     
     if period == 'month':
+
+        monthArray=[int((shots[0]-(shots[0] % 10000))/10000)]
+        narray=[0]
+        idx=0
+        for shot in shots:
+             dshot=int((shot-(shot % 10000))/10000)
+             if dshot == monthArray[idx]:
+                 narray[idx]=narray[idx]+1
+             else:
+                 idx=idx+1
+                 monthArray.append(dshot)
+                 narray.append(0) 
+                 
+    
+        # check month array for missing months
+        for idx in range(len(monthArray)):
+            monthArray[idx]=monthArray[idx] % 100
+        for idx in range(len(monthArray)-1):
+            if (monthArray[idx+1]-monthArray[idx] == 1) or \
+                (monthArray[idx+1]-monthArray[idx] == -11):
+                continue
+            else:
+                monthArray.insert(idx+1,monthArray[idx]+1)
+                narray.insert(idx+1,0)
+    
+
         #convert Month array to months
         months=['jan','feb','mar','apr','may','jun','jul','aug',\
                 'sep','oct','nov','dec']
@@ -58,9 +60,26 @@ def rebinShots(shots):
         ax.set_ylabel('number of OH shots')
         plt.show()
         
-    elif period == 'quarter':
-        quarters=['winter','spring','summer','fall']
-        strQuarterArray=[]
+    elif period == 'year':
+        yearArray=[int((shots[0]-(shots[0] % 1000000))/1000000)]
+        narray=[0]
+        idx=0
+        for shot in shots:
+             dshot=int((shot-(shot % 1000000))/1000000)
+             if dshot == yearArray[idx]:
+                 narray[idx]=narray[idx]+1
+             else:
+                 idx=idx+1
+                 yearArray.append(dshot)
+                 narray.append(0) 
+        
+     
+        
+        fig, ax=plt.subplots()
+        ax.bar(yearArray,narray)
+        ax.set_xlabel('year')
+        ax.set_ylabel('number of OH shots')
+        plt.show()
         
         
        

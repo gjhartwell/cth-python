@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Dec 19 14:30:03 2017
+Created on Mon Jul 27 14:06:23 2020
 
-@author: Greg
+@author: James Kring
+@email:  jdk0026@auburn.edu
 """
 

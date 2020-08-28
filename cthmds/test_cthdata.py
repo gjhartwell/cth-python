@@ -11,23 +11,23 @@ from timeSubset import timeSubset
 
 shot = 20032705
 mydata=CTHData("atest")
-#mydata.get_data(shotnum=shot,tag='\\I_p')
-mydata.get_data(shotnum=shot,node='processed:intfrm_1mm:int_nedl_1')
+mydata.get_data(shotnum=shot,tag='\\V_LOOP_AVG')
+#mydata.get_data(shotnum=shot,node='processed:intfrm_1mm:int_nedl_1')
 #mydata.get_data(shotnum=shot,board_channel=(1,96))
-#mydata.get_data(shotnum=shot,channel=96)
-print(mydata.name)
-print(mydata.formula)
-print(mydata.unit)
-print(mydata.gain)
+#mydata.get_data(shotnum=shot,channel=108)
+# print(mydata.name)
+# print(mydata.formula)
+# print(mydata.unit)
+# print(mydata.gain)
 print(mydata.system_name)
 #mydata.multiply_signal(2)
 #mydata2=mydata
 #mydata.add_signal(10000)
 #mydata.add_signal(mydata2)
 #mydata.zero()
-taxis=timeSubset(mydata.taxis,mydata.taxis,1.6,2.0)
-data=timeSubset(mydata.taxis,mydata.data,1.6,2.0)
-plt.plot(taxis,data)
+
+plt.plot(mydata.taxis,mydata.data)
+plt.xlim(1.6,1.7)
 plt.show()
 
 #getCTHData() 

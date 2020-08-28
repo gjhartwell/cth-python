@@ -23,15 +23,6 @@ progress
     
     The routines in that file should be transfered here when they are working
     there
-    
-    progress
-        batch file is read
-        directories created
-        batchfile is preprocessed before interpreted
-        a shot/time array is created
-        data is stored into v3data and v3fit classes
-        
-
 
 """
 
@@ -39,7 +30,7 @@ progress
 
 import tkinter as tk
 from chooseBatchFile import chooseBatchFile
-from reconRunner import reconRunner
+from reconRunner import reconRunnerMultiProcessor
 
 class Server(object):
     def __init__(self):
@@ -188,7 +179,7 @@ class BatchRunner(tk.Frame):
             print("Bad inputs - Need a dialog")
         else:
             print(self.batchFileName)
-            reconRunner(self.batchFileName,self.server)
+            reconRunnerMultiProcessor(self.batchFileName,self.server)
             
     def checkPBREntries(self):  
         #check entries given by the Python Batch Runner GUI

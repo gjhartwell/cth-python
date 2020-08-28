@@ -47,13 +47,13 @@ def ohshots(startdate,enddate,server):
                 try:
                     cthmds.cthopen(c,shotnum)
                 except:
-                    print('shot not opened')
+                    #print('shot not opened')
                     continue
                 else:
                     try:
                         usestate=c.get('usestate')
                     except:
-                        print('usestate not found')
+                        #print('usestate not found')
                         continue
                     else:
                         if usestate > 0:

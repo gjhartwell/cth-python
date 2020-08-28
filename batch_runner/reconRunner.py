@@ -23,19 +23,21 @@ rs.writeV3FITParameters(v3fitClassData)
 """
 
 from readBatchFile import BatchContents
-from ReadV3Data.PreprocessV3DataFile import PreprocessV3DataFile
+from readV3Data.PreprocessV3DataFile import PreprocessV3DataFile
 #from ReconstructionString import ReconstructionString
-from ReconStrings.ReconComm import ReconComm
-from ReconStrings.makeAllReconStrings import makeAllReconStrings
+from reconStrings.ReconComm import ReconComm
+from reconStrings.makeAllReconStrings import makeAllReconStrings
 import os
 import multiprocessing as mp
 
+########################################################################
 class Server(object):
     def __init__(self):
         self.address="recon2.physics.auburn.edu"
         self.port=2001
-        self.timeout=300
+        self.timeout=600
 
+########################################################################
 def sendToServer(server,rs,dirname):
     
     # define the number of files based on the port
@@ -76,7 +78,8 @@ def sendToServer(server,rs,dirname):
     comm.close()
     print('------------------out of Test_BatchRunner---------------------')
 
-def doreconRunner(file,server):
+########################################################################
+def doReconRunner(file,server):
 
 
     print("in do recon_runner")
@@ -93,24 +96,31 @@ def doreconRunner(file,server):
     dirnames=bfc.directoryArray
     return dirnames,allReconStrings
 
+#########################################################################
+ 
+def reconRunnerMultiProcessor(file,reconserver):   
+    if __name__ == '__main__':
+        print("in reconRunnerMultiProcessor")
 
-    
-if __name__ == '__main__':
-    reconserver=Server()
-    file="C:\\Users\\hartwgj\\Desktop\\TestReconFiles\\batchfile.cthsl"
-    dirnames,allReconStrings=doreconRunner(file,reconserver)
-    
-    jobs=[]
-    for idx,rs in enumerate(allReconStrings):
-        dirname=dirnames[idx]
-        print('sending reconstruction string',idx,'directory will be',dirname)
-        p = mp.Process(target=sendToServer,args=(reconserver,rs,dirname))
-        jobs.append(p)
-    for j in jobs:
-        j.start()
-    for j in jobs:
-        j.join()
-    print("finished running")
+        dirnames,allReconStrings=doReconRunner(file,reconserver)
+        
+        jobs=[]
+        for idx,rs in enumerate(allReconStrings):
+            dirname=dirnames[idx]
+            p = mp.Process(target=sendToServer,args=(reconserver,rs,dirname))
+            jobs.append(p)
+        for j in jobs:
+            j.start()
+        for j in jobs:
+            j.join()
+            
+########################################################################
             
         
-
+reconserver=Server()
+file="C:\\Users\\hartwgj\\Desktop\\TestReconFiles\\batchfile.cthsl"
+reconRunnerMultiProcessor(file,reconserver) 
+# dirnames,allReconStrings=doReconRunner(file,reconserver)
+# rs=allReconStrings[0]
+# dirname=dirnames[0]
+# sendToServer(reconserver,rs,dirname)

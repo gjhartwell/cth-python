@@ -5,8 +5,8 @@ Created on Tue Feb 13 10:59:18 2018
 @author: Greg
 """
 
-from findAverageValues import findAverageValues
-from ReconstructionString import ReconstructionString
+from readV3Data.findAverageValues import findAverageValues
+from reconStrings.ReconstructionString import ReconstructionString
 
 class VMECData(object):
     
