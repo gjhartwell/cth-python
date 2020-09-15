@@ -25,9 +25,9 @@ def makeAllReconStrings(bfc,ppfile):
             ReadV3Config(bfc,vmecClassData,v3fitClassData,debug)
     
         for idx,time in enumerate(shot.time):
-    
-            #print('idx is',idx,' and time is',shot.time[idx])
-            #print('creating reconstruction string')
+            if debug:
+                print('idx is',idx,' and time is',shot.time[idx])
+                print('creating reconstruction string')
             rs=ReconstructionString(idx)
             rs.writeVMECHeader(shot.shotnumber,shot.time[idx])
             rs.writeVMECParameters(vmecClassData)

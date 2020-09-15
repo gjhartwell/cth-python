@@ -128,29 +128,32 @@ def ReadV3Config(bfc,vmecData,v3fitData,debug):
                         
                         elif inSignalWeight:
                             if name == 'sdo_w_spec_imin':
-                                imin=parts[1]
+                                imin=int(parts[1])
                             elif name == 'sdo_w_spec_imax':
-                                imax=parts[1]
+                                imax=int(parts[1])
                             elif name == 'sdo_w_spec_weight':
                                 weights=getattr(v3fitData,'sdo_w_spec_weight')
+                                if debug: 
+                                    print('in readV3Config')
+                                    print('imin and imax',imin,imax)
                                 for i in range(imax-imin):
-                                    weights[i+imin]=parts[1]
+                                    weights.append(parts[1])
                                 setattr(v3fitData,'sdo_w_spec_weight',weights)
                         
                         elif inSignalSigma:
                             if name == 'sdo_s_spec_imin':
-                                imin=parts[1]
+                                imin=int(parts[1])
                             elif name == 'sdo_s_spec_imax':
-                                imax=parts[1]
+                                imax=int(parts[1])
                             elif name == 'sdo_s_spec_floor':
                                 floors=getattr(v3fitData,'sdo_s_spec_floor')
                                 for i in range(imax-imin):
-                                    floors[i+imin]=parts[1]
+                                    floors.append(parts[1])
                                 setattr(v3fitData,'sdo_s_spec_floor',floors)
                             elif name == 'sdo_s_spec_fraction':
                                 frac=getattr(v3fitData,'sdo_s_spec_fraction')
                                 for i in range(imax-imin):
-                                    frac[i+imin]=parts[1]
+                                    frac.append(parts[1])
                                 setattr(v3fitData,'sdo_s_spec_fraction',frac)
                             
                         else:

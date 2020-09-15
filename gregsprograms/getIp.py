@@ -47,14 +47,16 @@ def getIp(shotnum,server):
 	
     print('maximum plasma current: ',max(Ip2))
 
+    tit='Plasma Current - shot '+str(shotnum)
+
     plt.plot(time2,Ip2/1000)
-    plt.title("Plasma Current - shot 20032705")
+    plt.title(tit)
     plt.xlabel('time(s)')
     plt.ylabel('Plasma Current (kA)')
     plt.show()
 
 #getIp(20032705,"Neil")
-getIp(20032705,"mds")
+getIp(20072944,"mds")
 
 #-----------------------------------------------------------------------------
 

@@ -80,6 +80,9 @@ class V3FITData(object):
    
     #   counters and names
         self.n_signals = 0
+        self.mag_signals = 0
+        self.sxr_signals = 0
+        self.int_signals = 0
         self.signalNames=[]
         
     # signal weights
@@ -118,13 +121,23 @@ class V3FITData(object):
         self.lif_zc =[]
         self.lif_arz=[]
     
+    # Interferometer information
+        self.ne_pp_unit=0.0
+        self.ne_min=0.0
+        self.pp_ne_types=['two_power','power_series','akima_spline',
+                          'cubic_spline','line_segment','two_power_gs']
+        self.pp_ne_ptype="two_power"
+        self.pp_ne_b=[]
+        self.pp_ne_as=[]
+        self.pp_ne_af=[]
+    
     def V3FITmoveToClass(self,shot,parsedLine,shotData,dataNames,debug):
         if debug:
             print("==========================================================")
             print("in V3FITmoveToClass")
             print(parsedLine)
         # remove 'class'
-        removeItems=['class','v3fit_data']
+        removeItems=['class','v3fit_data','int_diagnostic']
         for item in removeItems:
             while item in parsedLine: parsedLine.remove(item)
         
@@ -133,25 +146,28 @@ class V3FITData(object):
         for v in parsedLine:
             if debug: 
                 print("")
-                print ("searching for data name:",v)
+                print ("In V3FITmoveToClass - searching for data name:",v)
             if v in dataNames:
                 idx=dataNames.index(v)
                 if debug:
                     print("found data %s at %d of %d" % (v,idx,len(shotData)))
                 data=shotData[idx]
                 if debug: print(data)
-                if type(data) is list:
-                    if debug: print(" this is a list of length",len(data))
-                    averageDataArray=[]
-                    for item in data:
-                        averageData=findAverageValues(item,shot)
-                        averageDataArray+=[averageData]
+                if type(data.getData()) is str:
+                    setattr(self,v,data.getData())
                 else:
-                    averageData=findAverageValues(data,shot)
-                setattr(self,v,averageData)
+                    if type(data) is list:
+                        if debug: print(" this is a list of length",len(data))
+                        averageDataArray=[]
+                        for item in data:
+                            averageData=findAverageValues(item,shot)
+                            averageDataArray+=[averageData]
+                    else:
+                        averageData=findAverageValues(data,shot)
+                    setattr(self,v,averageData)
                 
             else:
-                print("Oops, no data found for ",v)
+                print("In V3FITmoveToClass, no data found for ",v)
             
             
             

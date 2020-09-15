@@ -154,8 +154,6 @@ class wout_file:
 
         return s
 
-
-
 def get_fluxsurfaces(wout, num_theta, phi):
         # phi in degrees
         
@@ -176,6 +174,22 @@ def get_fluxsurfaces(wout, num_theta, phi):
                                                    -xn * phi))        
                 
         return R[:ns], Z[:ns]
+
+def get_maxR(wout, phi):
+        # phi in degrees
+        
+        phi = phi/180 * np.pi
+        theta = 0.0
+        xm = np.array(wout.xm)
+        xn = np.array(wout.xn)
+        ns = wout.ns
+        #print('ns',ns)
+        
+       
+        Rmax = sum(wout.rmnc[ns-1] * np.cos(xm * theta - xn * phi))
+              
+                
+        return Rmax
 
 def get_iotabar(woutdata):
     # gets the rotational transform information from the wout file

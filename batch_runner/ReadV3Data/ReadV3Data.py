@@ -43,6 +43,12 @@ class ReconCTHData(object):
     def addTaxis(self,taxis):
         self.taxis=taxis
         
+    def addString(self,string):
+        self.string=string
+        
+    def getString(self):
+        return self.string
+        
     def getName(self):
         return self.name
     
@@ -166,12 +172,17 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
     for v in values:
         tempdata=ReconCTHData("temp")
         if debug: 
-            print("In IntV3Data while --- stack ",stack)
+            print("In InterpretV3Data for --- stack ",stack)
             print("value is ",v)
-        if v.isdigit(): 
+        
+        if "/" in v:
+            if debug: print('found string',v)
+            stack.insert(0,v)
+        
+        elif v.isdigit(): 
             if debug: print("found digit",v)
             stack.insert(0,int(v))
-        
+            
         elif "." in v:
             if debug: print("found float",v)
             stack.insert(0,float(v))
@@ -180,6 +191,10 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
             if debug: print("found comma --- probably an error")
             del values[0]
             break
+        
+        elif v=="STRING":
+            continue
+            #stack.insert(0,v)
         
         elif v == "LOAD_CHANNEL_NUMBER":
             if debug: print("loading channel ",stack[0])
@@ -349,7 +364,7 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
                 if debug: print("using processed data")
                 stack.insert(0,v)
             else:
-                print("Oops, no data found for ",v)
+                print("In interpretV3DataLine -- Oops, no data found for ",v)
             
             
         else:
@@ -377,10 +392,20 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
             data.data-=value
         if debug: 
             print("Adding ReconCTHData")
-            plt.plot(data.taxis,data.data)
-            plt.xlim(1.6,1.7)
-            plt.title(data.getName())
-            plt.show()
+            # plt.plot(data.taxis,data.data)
+            # plt.xlim(1.6,1.7)
+            # plt.title(data.getName())
+            # plt.show()
+            print(data.getName())  
+            print("stack length",len(stack))
+        shotData.append(data)
+        
+    elif isinstance(stack[0],str):
+        stack0=stack.pop(0)
+        if debug: print('adding string',stack0)
+        data=ReconCTHData(dataName)
+        data.addData(stack0)
+        if debug:
             print(data.getName())  
             print("stack length",len(stack))
         shotData.append(data)

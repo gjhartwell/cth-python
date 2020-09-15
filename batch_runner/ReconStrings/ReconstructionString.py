@@ -430,10 +430,13 @@ class ReconstructionString(object):
         self.addComment("Reconstruction Signals")
         idx=0
         for signal in v3fitInputs.signalNames:
+            print('in writeV3FITReconSignals - signal is',signal)
             if signal.lower() == 'Bar Limiter'.lower():
                 self.writeV3FITBarLimiterSignal(v3fitInputs,idx)
             elif signal.lower() == 'Circular Limiter'.lower():
                 self.writeV3FITCircularLimiterSignal(v3fitInputs,idx)
+            else:
+                print('in writeV3FITReconSignals - signal is',signal)
             idx+=1
         # handle combinations of signals
         idx=0
