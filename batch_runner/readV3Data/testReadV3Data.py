@@ -66,6 +66,7 @@ def sendToServer(server,rs,dirname):
 reconserver=Server()
 file="C:\\Users\\hartwgj\\Desktop\\TestReconFiles\\batchfile2.cthsl"
 file=r'C:\Users\hartwgj\Desktop\TestReconFilesInt\batchfile_phi_int.cthsl'
+file=r'C:\Users\hartwgj\Desktop\TestReconFilesInt\batchfile.cthsl'
 print("read batch file")
 bfc=BatchContents(file)
 debug=False
@@ -85,23 +86,23 @@ for shotidx,shot in enumerate(bfc.shot_time_array):
     debug=True
     vmecClassData,v3fitClassData= \
         ReadV3DataFile(ppfile,shot,debug)
-    vmecClassData,v3fitClassData= \
-        ReadV3Config(bfc,vmecClassData,v3fitClassData,debug)
+    # vmecClassData,v3fitClassData= \
+    #     ReadV3Config(bfc,vmecClassData,v3fitClassData,debug)
         
-    for idx,time in enumerate(shot.time):
+#     for idx,time in enumerate(shot.time):
 
-        print('idx is',idx,' and time is',shot.time[idx])
-        print('creating reconstruction string')
-        rs=ReconstructionString(idx)
-        rs.writeVMECHeader(shot.shotnumber,shot.time[idx])
-        rs.writeVMECParameters(vmecClassData)
-        rs.writeV3FITHeader(shot.shotnumber, shot.time[idx])
-        rs.writeV3FITParameters(v3fitClassData)
-        rs.addEOF()
-        allReconStrings.append(rs)
-dirnames=bfc.directoryArray
-for idx,rs in enumerate(allReconStrings):
-            dirname=dirnames[idx]
-            sendToServer(reconserver,rs,dirname)
+#         print('idx is',idx,' and time is',shot.time[idx])
+#         print('creating reconstruction string')
+#         rs=ReconstructionString(idx)
+#         rs.writeVMECHeader(shot.shotnumber,shot.time[idx])
+#         rs.writeVMECParameters(vmecClassData)
+#         rs.writeV3FITHeader(shot.shotnumber, shot.time[idx])
+#         rs.writeV3FITParameters(v3fitClassData)
+#         rs.addEOF()
+#         allReconStrings.append(rs)
+# dirnames=bfc.directoryArray
+# for idx,rs in enumerate(allReconStrings):
+#             dirname=dirnames[idx]
+#             sendToServer(reconserver,rs,dirname)
             
 

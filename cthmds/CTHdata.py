@@ -172,12 +172,12 @@ class CTHData(object):
 def channelToBoard(channel):
     #print(channel)
     channel=int(channel)
-    if channel <= 24:
+    if channel <= 23:
         board=0
     else:
-        channel -= 24
+        channel -= 23
         board = int((channel-1) / 96) +1
-        channel = (channel-1) % 96 +1 
+        channel = (channel-1) % 96 
     channel += 1
     return (board,channel)
 #-----------------------------------------------------------------------------
@@ -334,7 +334,7 @@ def cthdata_board_channel(self,mdsconn,board,channel):
     if board == 0:
         signame = 'scxi:names:ch' + str(channel)
         formulaname = 'scxi:formula:ch' + str(channel)
-    elif (board >= 1) and (board <= 4):
+    elif board in [1,2,3,4,7,8]:
         signame = 'acq' + brd_str + '_com:ch' + chn_str + ':name'
         formulaname = 'acq' + brd_str + '_com:ch' + chn_str + ':formula'
     elif board == 5:
@@ -343,9 +343,6 @@ def cthdata_board_channel(self,mdsconn,board,channel):
     elif board == 6:
         signame = 'acqfast2_com:ch' + chn_str + ':name'
         formulaname = 'acqfast2_com:ch' + chn_str + ':formula'
-    elif (board == 7) or (board == 8):
-        signame = 'acq' + brd_str + '_com:ch' + chn_str + ':name'
-        formulaname = 'acq' + brd_str + '_com:ch' + chn_str + ':formula'
     else:
         print('cthdata_board_formula---board ',board,' not supported')
     
@@ -355,11 +352,16 @@ def cthdata_board_channel(self,mdsconn,board,channel):
         nameL=''
     name = "".join(map(chr,nameL))
     
+    # try:
+    #     formulaL = mdsconn.get(formulaname)
+    # except:
+    #     formulaL=''
+    # formula = "".join(map(chr,formulaL))
     try:
         formulaL = mdsconn.get(formulaname)
+        formula = "".join(map(chr,formulaL))
     except:
-        formulaL=''
-    formula = "".join(map(chr,formulaL))
+        formula=''
     
     # parse the formula
     multiplier=1

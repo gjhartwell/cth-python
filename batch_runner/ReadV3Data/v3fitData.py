@@ -121,7 +121,21 @@ class V3FITData(object):
         self.lif_zc =[]
         self.lif_arz=[]
     
-    # Interferometer information
+   # Magnetics information
+        self .mdsig_list_filenema=''
+   
+   # SXR information
+        self.sxrch_dot_file=''
+        self.num_sxrem_p = 0
+        self.pp_sxrem_p_types=['two_power','power_series','akima_spline',
+                          'cubic_spline','line_segment','two_power_gs']
+        self.model_sxrem_type_a=["two_power"]
+        self.pp_sxrem_as_a=[]
+        self.pp_sxrem_af_a=[]
+        self.pp_sxrem_ptype_a=[]
+        self.pp_sxrem_b_a=[]
+    
+   # Interferometer information
         self.ne_pp_unit=0.0
         self.ne_min=0.0
         self.pp_ne_types=['two_power','power_series','akima_spline',
@@ -130,6 +144,10 @@ class V3FITData(object):
         self.pp_ne_b=[]
         self.pp_ne_as=[]
         self.pp_ne_af=[]
+        self.ipch_dot_file=''
+    
+   # Thomson Scattering information     
+    
     
     def V3FITmoveToClass(self,shot,parsedLine,shotData,dataNames,debug):
         if debug:
@@ -147,6 +165,44 @@ class V3FITData(object):
             if debug: 
                 print("")
                 print ("In V3FITmoveToClass - searching for data name:",v)
+            if v in dataNames:
+                idx=dataNames.index(v)
+                if debug:
+                    print("found data %s at %d of %d" % (v,idx,len(shotData)))
+                data=shotData[idx]
+                if debug: print(data)
+                if type(data.getData()) is str:
+                    setattr(self,v,data.getData())
+                else:
+                    if type(data) is list:
+                        if debug: print(" this is a list of length",len(data))
+                        averageDataArray=[]
+                        for item in data:
+                            averageData=findAverageValues(item,shot)
+                            averageDataArray+=[averageData]
+                    else:
+                        averageData=findAverageValues(data,shot)
+                    setattr(self,v,averageData)
+                
+            else:
+                print("In V3FITmoveToClass, no data found for ",v)
+                
+    def V3FITmoveToClass2(self,shot,parsedLine,shotData,dataNames,debug):
+        if debug:
+            print("==========================================================")
+            print("in V3FITmoveToClass")
+            print(parsedLine)
+        # remove 'class'
+        removeItems=['class','v3fit_data']
+        for item in removeItems:
+            while item in parsedLine: parsedLine.remove(item)
+        
+        if debug: print(parsedLine)
+        
+        for v in parsedLine:
+            if debug: 
+                print("")
+                print ("In V3FITmoveToClass2 - searching for data name:",v)
             if v in dataNames:
                 idx=dataNames.index(v)
                 if debug:

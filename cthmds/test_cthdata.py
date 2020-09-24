@@ -9,25 +9,33 @@ import matplotlib.pyplot as plt
 from CTHdata import CTHData
 from timeSubset import timeSubset
 
-shot = 20032705
-mydata=CTHData("atest")
-mydata.get_data(shotnum=shot,tag='\\V_LOOP_AVG')
+shot = 20092203
+ibias=CTHData("iibas")
+vbias=CTHData('vbias')
+#mydata.get_data(shotnum=shot,tag='\\V_LOOP_AVG')
 #mydata.get_data(shotnum=shot,node='processed:intfrm_1mm:int_nedl_1')
-#mydata.get_data(shotnum=shot,board_channel=(1,96))
+ibias.get_data(shotnum=shot,board_channel=(2,96))
+vbias.get_data(shotnum=shot,board_channel=(2,95))
 #mydata.get_data(shotnum=shot,channel=108)
 # print(mydata.name)
 # print(mydata.formula)
 # print(mydata.unit)
 # print(mydata.gain)
-print(mydata.system_name)
+#print(mydata.system_name)
 #mydata.multiply_signal(2)
 #mydata2=mydata
 #mydata.add_signal(10000)
 #mydata.add_signal(mydata2)
 #mydata.zero()
 
-plt.plot(mydata.taxis,mydata.data)
+plt.plot(ibias.taxis,ibias.data)
 plt.xlim(1.6,1.7)
+plt.show()
+
+
+plt.plot(vbias.taxis,vbias.data)
+plt.xlim(1.6,1.7)
+
 plt.show()
 
 #getCTHData() 

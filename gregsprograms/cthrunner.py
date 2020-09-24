@@ -45,6 +45,7 @@ def CTHrunner(**kwargs):
             if prevnum >= shotnum:
                 waitingfordata=False
                 print('processing shot',prevnum)
+                print('this is where the code would go')
                 shotnum=shotnum+1
             else:
                 # pausing 5 seconds before next check

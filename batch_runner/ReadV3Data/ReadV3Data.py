@@ -103,7 +103,7 @@ def ReadV3DataFile(preProcessedFile,shot,debug):
                                               debug)
                     elif parsedLine[0] == "class" \
                             and parsedLine[1]=='v3fit_data':
-                        V3FITclassData.V3FITmoveToClass(shot,
+                        V3FITclassData.V3FITmoveToClass2(shot,
                                                         parsedLine,
                                                         shotData,
                                                         dataNames,
@@ -274,6 +274,10 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
                 tempdata.addData(v1.data*v2)
                 tempdata.addTaxis(v1.taxis)
                 stack.insert(0,tempdata)
+            elif type(v1) is float and type(v2) is list:
+                for idx,element in enumerate(v2):
+                    v2[idx]=v2[idx]*v1
+                stack.insert(0,v2)
             elif type(v1) is ReconCTHData and type(v2) is ReconCTHData:
                 if len(v1.taxis) != len(v2.taxis):
                     if len(v1.taxis) < len(v2.taxis):
@@ -283,6 +287,20 @@ def InterpretV3DataLine(shot,values,shotData,dataNames,debug):
                 tempdata.addData(v1.data*v2.data)
                 tempdata.addTaxis(v1.taxis)
                 stack.insert(0,tempdata)
+            else:
+                print("unhandled MULTIPLY in InterpretV3Data in ReadV3Data")
+        elif v == 'DIVIDE':
+            v1=stack.pop(0) # v1 is factor
+            v2=stack.pop(0) # v2 is array
+            if debug: print(type(v1),type(v2))
+            if type(v1) is ReconCTHData and type(v2) is float:
+                tempdata.addData(v1.data/v2)
+                tempdata.addTaxis(v1.taxis)
+                stack.insert(0,tempdata)
+            elif type(v1) is list and type(v2) is float:
+                for idx,element in enumerate(v1):
+                    v1[idx]=v1[idx]/v2
+                stack.insert(0,v1)
             else:
                 print("unhandled MULTIPLY in InterpretV3Data in ReadV3Data")
 
