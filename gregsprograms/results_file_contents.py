@@ -32,8 +32,8 @@ class results_file_contents:
 
         # self.signal_weight = data.variables['signal_weight'][:]
 
-        # self.ne_grid = data.variables['ne_grid'][:]
-        # self.ne_unit = data.variables['ne_unit'][:]
+        self.ne_grid = data.variables['ne_grid'][:]
+        self.ne_unit = data.variables['ne_unit'][:]
         # self.ne_min = data.variables['ne_min'][:]
         
             

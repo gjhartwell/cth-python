@@ -76,17 +76,33 @@ def plotParameters(folder):
             value[pdx,fdx]=result.param_value[pdx]
             sigma[pdx,fdx]=result.param_sigma[pdx]
         
-    for pdx in range(len(names)): 
-    
-        plt.title(names[pdx]+'--shot '+str(shot))
-        plt.errorbar(time,value[pdx,:],sigma[pdx,:],
-                         color='g',label='$\Phi(a)$',
+    for pdx,name in enumerate(names):
+        
+        if name=='phiedge':
+            plt.title('$\Phi_{edge}$--shot '+str(shot))
+            plt.errorbar(time,value[pdx,:],sigma[pdx,:],
+                         color='g',
                          linestyle='',marker='o',markersize=3,
                          ecolor='gray',elinewidth=.7)
-        plt.xlabel('time(s)')
-        plt.ylabel('$\Phi_{edge}$')
-        plt.legend()
-        plt.show()
+            plt.xlabel('time(s)')
+            plt.ylabel('$\Phi_{edge}$')
+            plt.ylim(min(value[pdx,:])*.9,max(value[pdx,:])*1.1)
+            #plt.legend()
+            plt.show()
+        elif name=='pp_ne_af':
+            unit=r' ($\times$ '+str(result.ne_unit[0])+r'$m^{-3}$)'
+            tit=name+'('+str(result.param_index[pdx,0])+')'
+            plt.title(tit+'--shot '+str(shot))
+            plt.errorbar(time,value[pdx,:],sigma[pdx,:],
+                         color='g',
+                         linestyle='',marker='o',markersize=3,
+                         ecolor='gray',elinewidth=.7)
+            plt.xlabel('time(s)')
+            plt.ylabel(name+unit)
+            plt.ylim(min(value[pdx,:])*.9,max(value[pdx,:])*1.1)
+            #plt.legend()
+            plt.show()
+        
     
     
 def recon_synopsis(file):
@@ -103,7 +119,7 @@ def recon_synopsis(file):
     print('parameter sigma',result.param_sigma)
 
     
-folder=r'C:\Users\hartwgj\Documents\Reconstructions\Nic20072944\20072944'
+folder=r'C:\Users\hartwgj\Documents\Reconstructions\shot_20090173\20090173b'
 # files=getResultFiles(folder)
 # file=files[0]
 # recon_synopsis(file)
