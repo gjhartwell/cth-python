@@ -27,7 +27,46 @@
 
 from readV3Data.vmecData import VMECData
 from readV3Data.v3fitData import V3FITData
+import numpy as np
 
+#-------------------------------------------------------
+
+def makeSigmaArray(v3fitData,debug):
+    
+    # put signals in one location
+    debug=True
+
+    data=np.array(v3fitData.sdo_data_a)
+    v3fitData.sdo_sigma_a=data
+    if debug:
+        print('in makeSigmaArray')
+        print(v3fitData.sdo_s_spec_imin)
+        print(v3fitData.sdo_s_spec_imax)
+        print(v3fitData.sdo_s_spec_floor)
+        print(v3fitData.sdo_s_spec_fraction)
+        print('sdo_data')
+        print(v3fitData.sdo_data_a)
+        print('data',data.shape)
+        print(data)
+   
+    
+    for idx1,idx2,floor,frac in zip(v3fitData.sdo_s_spec_imin,
+                                    v3fitData.sdo_s_spec_imax,
+                                    v3fitData.sdo_s_spec_floor,
+                                    v3fitData.sdo_s_spec_fraction):
+        if debug: print(idx1,idx2,floor,frac)
+        for idx in range(int(idx1),int(idx2)):
+            for time in range(data.shape[1]):
+                if debug:print('point a',idx,time,data[idx-1][time])
+                v3fitData.sdo_sigma_a[idx-1][time]= \
+                    max(float(floor),float(frac)*data[idx-1][time])
+    if debug:
+        print('sigma')
+        v3fitData.sdo_sigma_a=v3fitData.sdo_sigma_a.tolist()
+        print(v3fitData.sdo_sigma_a)
+   
+    
+    return v3fitData
 
 def ReadV3Config(bfc,vmecData,v3fitData,debug):
     
@@ -126,41 +165,22 @@ def ReadV3Config(bfc,vmecData,v3fitData,debug):
                             oldvalue=getattr(v3fitData,name)
                             setattr(v3fitData,name,oldvalue+[value])
                         
-                        elif inSignalWeight:
-                            if name == 'sdo_w_spec_imin':
-                                imin=int(parts[1])
-                            elif name == 'sdo_w_spec_imax':
-                                imax=int(parts[1])
-                            elif name == 'sdo_w_spec_weight':
-                                weights=getattr(v3fitData,'sdo_w_spec_weight')
-                                if debug: 
-                                    print('in readV3Config')
-                                    print('imin and imax',imin,imax)
-                                for i in range(imax-imin):
-                                    weights.append(parts[1])
-                                setattr(v3fitData,'sdo_w_spec_weight',weights)
-                        
-                        elif inSignalSigma:
-                            if name == 'sdo_s_spec_imin':
-                                imin=int(parts[1])
-                            elif name == 'sdo_s_spec_imax':
-                                imax=int(parts[1])
-                            elif name == 'sdo_s_spec_floor':
-                                floors=getattr(v3fitData,'sdo_s_spec_floor')
-                                for i in range(imax-imin):
-                                    floors.append(parts[1])
-                                setattr(v3fitData,'sdo_s_spec_floor',floors)
-                            elif name == 'sdo_s_spec_fraction':
-                                frac=getattr(v3fitData,'sdo_s_spec_fraction')
-                                for i in range(imax-imin):
-                                    frac.append(parts[1])
-                                setattr(v3fitData,'sdo_s_spec_fraction',frac)
+                        elif inSignalWeight or inSignalSigma:
+                            value=getattr(v3fitData,name)
+                            value.append(parts[1])
+                            setattr(v3fitData,name,value)
+                           
                             
                         else:
                             oldvalue=getattr(v3fitData,name)
                             setattr(v3fitData,name,value)
+    # make sigma array
+    v3fitData=makeSigmaArray(v3fitData,debug)
     return vmecData,v3fitData
-                        
+                     
+        
+
+                   
  # testing                
 # vmecData=VMECData()
 # v3fitData=V3FITData()            

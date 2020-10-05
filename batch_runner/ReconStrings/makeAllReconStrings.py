@@ -32,7 +32,7 @@ def makeAllReconStrings(bfc,ppfile):
             rs.writeVMECHeader(shot.shotnumber,shot.time[idx])
             rs.writeVMECParameters(vmecClassData)
             rs.writeV3FITHeader(shot.shotnumber, shot.time[idx])
-            rs.writeV3FITParameters(v3fitClassData)
+            rs.writeV3FITParameters(v3fitClassData,idx)
             rs.addEOF()
             allReconStrings.append(rs)
     return allReconStrings

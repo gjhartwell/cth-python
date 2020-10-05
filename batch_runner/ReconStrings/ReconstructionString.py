@@ -199,7 +199,24 @@ class ReconstructionString(object):
 # ----------------------------------------------------------------------------
 #                        V3FIT Wrting Commands
 # ----------------------------------------------------------------------------
- 
+
+    def formatTo1D(self,string,index):
+        return(string+'('+str(index)+')')
+    def formatTo1Drange(self,string,index1,index2):
+        return(string+'('+str(index1)+':'+str(index2)+')')
+        
+    def formatToND(self,string,indexes):
+        for idx, index in enumerate(indexes):
+            if idx == 0:
+                string=string+'('
+            else:
+                string=string+','
+            if index >=0:
+                string=string+str(index)
+            else:
+                string=string+':'
+        return string+')' 
+
     def writeV3FITHeader(self,shotNumber,shotTime):
         #print("writing V3FIT Header")
         filetype='v3fit'
@@ -231,67 +248,66 @@ class ReconstructionString(object):
         self.addComment("Derived Parameters")
         self.addInt32("n_dp",v3fitInputs.n_dp)
         
-    def writeV3FITReconParameters(self,v3fitInputs):
-        #print("Writing V3FIT Recon Parameters")
+    def writeV3FITReconParameters(self,v3fitInputs,debug):
+        if debug: print("Writing V3FIT Recon Parameters")
         self.addComment("Reconstruction Parameters")
         self.addInt32("n_rp",v3fitInputs.n_rp)
-        #print("n_rp = ",v3fitInputs.n_rp)
+        if debug: print("n_rp = ",v3fitInputs.n_rp)
         for rp in range(v3fitInputs.n_rp):
-            #print("rp = ",rp)
-            self.addString(self.formatTo1D("rp_type",rp+1), \
+            if debug: 
+                print('-------------------')
+                print("rp = ",rp)
+                print('v3fitinputs',v3fitInputs.rp_type[rp])
+                print('int',int(v3fitInputs.rp_type[rp]))
+                print('type',rp_types[int(v3fitInputs.rp_type[rp])])
+            self.addString(self.formatTo1D("rp_type",rp+1), 
                            rp_types[int(v3fitInputs.rp_type[rp])])
-            self.addDouble(self.formatTo1D("rp_vrnc",rp+1), \
+            
+            self.addDouble(self.formatTo1D("rp_vrnc",rp+1), 
                            v3fitInputs.rp_vrnc[rp])
-            self.addInt32(self.formatTo1D("rp_index",rp+1), \
+            self.addInt32(self.formatTo1D("rp_index",rp+1), 
                           v3fitInputs.rp_index[rp])
-            self.addInt32(self.formatTo1D("rp_index2",rp+1), \
+            self.addInt32(self.formatTo1D("rp_index2",rp+1), 
                           v3fitInputs.rp_index2[rp])
             
             tempName=self.formatToND("rp_range_type",[rp+1,-1])
-            tempArray=[]
-            for name in v3fitInputs.rp_range_type:
-                tempArray+=[name]
-            self.addStringArray1D(tempName,tempArray)
+            #tempArray=[]
+            #for name in v3fitInputs.rp_range_type:
+            #    tempArray+=[name]
+            #self.addStringArray1D(tempName,tempArray)
+            if debug:
+                print('tempname',tempName)
+                print(v3fitInputs.rp_range_type)
+           #     print(rp_range_types[int(v3fitInputs.rp_range_type[rp])])
+            # self.addString(tempName,
+            #     rp_range_types[int(v3fitInputs.rp_range_type[rp])])
             
-            tempName=self.formatToND("rp_range_value",[rp+1,-1])
-            tempArray=[]
-            for value in v3fitInputs.rp_range_value:
-                tempArray+=[value]   
-            self.addDoubleArray1D(tempName,tempArray)
+            # tempName=self.formatToND("rp_range_value",[rp+1,-1])
+            # tempArray=[]
+            # for value in v3fitInputs.rp_range_value:
+            #     tempArray+=[value]   
+            # self.addDoubleArray1D(tempName,tempArray)
             
-            tempName=self.formatToND("rp_range_index",[rp+1,1,-1])
-            tempArray=[]
-            for value in v3fitInputs.rp_range_value:
-                tempArray+=[value]   
-            self.addDoubleArray1D(tempName,tempArray) 
+            # tempName=self.formatToND("rp_range_index",[rp+1,1,-1])
+            # tempArray=[]
+            # for value in v3fitInputs.rp_range_value:
+            #     tempArray+=[value]   
+            # self.addDoubleArray1D(tempName,tempArray) 
             
-            # I am not sure what this is for
-            tempName=self.formatToND("rp_range_index",[rp+1,2,-1])
-            tempArray=[]
-            for value in v3fitInputs.rp_range_value:
-                tempArray+=[value]   
-            self.addDoubleArray1D(tempName,tempArray) 
+            # # I am not sure what this is for
+            # tempName=self.formatToND("rp_range_index",[rp+1,2,-1])
+            # tempArray=[]
+            # for value in v3fitInputs.rp_range_value:
+            #     tempArray+=[value]   
+            # self.addDoubleArray1D(tempName,tempArray) 
             
-    def formatTo1D(self,string,index):
-        return(string+'('+str(index)+')')
-        
-    def formatToND(self,string,indexes):
-        for idx, index in enumerate(indexes):
-            if idx == 0:
-                string=string+'('
-            else:
-                string=string+','
-            if index >=0:
-                string=string+str(index)
-            else:
-                string=string+':'
-        return string+')'
+
              
                 
     def writeV3FITBarLimiterSignal(self,v3fitInputs,idx):
         self.addComment("Bar Limiter")
-        #print("     writing V3FIT Bar Limiter Signals")
-        #print('idx =',idx)
+        print("     writing V3FIT Bar Limiter Signals")
+        print('idx =',idx)
         writeidx=idx+1
         self.addBool(self.formatTo1D("lif_on_edge",writeidx),
                       bool(int(v3fitInputs.lif_on_edge[idx])))
@@ -334,7 +350,7 @@ class ReconstructionString(object):
         self.addComment("Circular Limiter")
         #print("     writing V3FIT Circular Limiter Signals")
         #print('idx =',idx)
-        writeidx=idx+1
+        writeidx=idx+v3fitInputs.n_signals
         self.addBool(self.formatTo1D("lif_on_edge",writeidx),
                       bool(int(v3fitInputs.lif_on_edge[idx])))
         
@@ -375,39 +391,45 @@ class ReconstructionString(object):
         self.addComment("Combination of Signals")
         #print("     writing Combinations of Signals")
         #print('idx =',idx)
-        writeidx=idx+1
+        nLimiters=v3fitInputs.nBarLimiters+v3fitInputs.nCircularLimiters
+        writeidx=1
+        idx=idx+nLimiters
+        idx1=0
+        print('nlimiters',nLimiters)
+        print('idx',idx)
         self.addString(self.formatTo1D('coosig_name',writeidx),
-                       v3fitInputs.coosig_name[idx])
+                       v3fitInputs.coosig_name[idx1])
         self.addString(self.formatTo1D('coosig_type',writeidx),
-                       v3fitInputs.coosig_type[idx])
+                       v3fitInputs.coosig_type[idx1])
         self.addString(self.formatTo1D('coosig_units',writeidx),
-                       v3fitInputs.coosig_units[idx])
-        if isinstance(v3fitInputs.coosig_indices[idx],str):
+                       v3fitInputs.coosig_units[idx1])
+        if isinstance(v3fitInputs.coosig_indices[idx1],str):
             #only 1 element
             self.addInt32(self.formatTo1D("coosig_indices",writeidx),
-                          v3fitInputs.coosig_indices[idx])
+                          v3fitInputs.coosig_indices[idx1])
         else: #it should be an array
             tempName=self.formatToND("coosig_indices",[writeidx,-1])
             tempArray=[]
-            for value in v3fitInputs.coosig_indices[idx]:
+            for value in v3fitInputs.coosig_indices[idx1]:
                 #print('value=',value)
                 tempValue=int(value)
                 tempArray+=[tempValue]   
                 #print(tempName,tempArray)
             self.addInt32Array1D(tempName,tempArray)
-        if isinstance(v3fitInputs.coosig_coeff[idx],str):
+        if isinstance(v3fitInputs.coosig_coeff[idx1],str):
             #only 1 element
             self.addInt32(self.formatTo1D("coosig_coeff",writeidx),
                           v3fitInputs.coosig_coeff[idx])
         else: #it should be an array
             tempName=self.formatToND("coosig_coeff",[writeidx,-1])
             tempArray=[]
-            for value in v3fitInputs.coosig_coeff[idx]:
+            for value in v3fitInputs.coosig_coeff[idx1]:
                 #print('value=',value)
                 tempValue=float(value)
                 tempArray+=[tempValue]   
                 #print(tempName,tempArray)
             self.addDoubleArray1D(tempName,tempArray)
+        idx=0
         self.addInt32(self.formatTo1D("sdo_s_spec_imin",writeidx), 
                       v3fitInputs.sdo_s_spec_imin[idx])
         self.addInt32(self.formatTo1D("sdo_s_spec_imax",writeidx), 
@@ -416,6 +438,12 @@ class ReconstructionString(object):
                       float(v3fitInputs.sdo_s_spec_floor[idx]))
         self.addDouble(self.formatTo1D("sdo_s_spec_fraction",writeidx), 
                       float(v3fitInputs.sdo_s_spec_fraction[idx]))
+        
+        # print(v3fitInputs.sdo_sigma_a)
+        # self.addFloat(self.formatTo1D(
+        #                     'sdo_sigma_a',
+        #                     v3fitInputs.sdo_s_spec_imin[-1]),
+        #                 float(v3fitInputs.sdo_sigma_a[-1][idx]))
             
     def writeTotalSignals(self,v3fitInputs):
         self.addComment('Total Signals')
@@ -425,31 +453,81 @@ class ReconstructionString(object):
         self.addInt32('n_prior', 0)
         self.addInt32('n_sdata_o', v3fitInputs.n_signals)
         
-    def writeV3FITReconSignals(self,v3fitInputs):
-        #print("writing V3FIT Recon Signals")
+    def writeV3FITReconSignals(self,v3fitInputs,idx,debug):
+        if debug:
+            print("writing V3FIT Recon Signals")
+            print(v3fitInputs.signalNames)
         self.addComment("Reconstruction Signals")
-        idx=0
+        nMag=v3fitInputs.n_mag_signals
+        nSXR=v3fitInputs.n_sxr_signals
+        nInt=v3fitInputs.n_int_signals
+        if debug:
+            print('nMag',nMag,' nSXR',nSXR,' nInt',nInt)
+        # add magnetic signals
+        if nMag > 0:
+            signal_array=[]
+            #sigma_array=[]
+            self.addString('mdsig_list',v3fitInputs.mdsig_list_filename)
+            for sig in range(nMag):
+                signal_array.append(v3fitInputs.magnetic_data[sig][idx])
+            #    sigma_array.append(v3fitInputs.sdo_sigma_a[sig][idx])
+            self.addDoubleArray1D(self.formatTo1Drange('sdo_data_a',1,nMag),
+                                  signal_array)
+            #self.addDoubleArray1D(self.formatTo1Drange(
+            #        'sdo_sigma_a',1,nMag),sigma_array)
+        if nSXR > 0:
+            signal_array=[]
+            #sigma_array=[]
+            self.addString('sxrch_dot_file',v3fitInputs.sxrch_dot_file)
+            for sig in range(nSXR):
+                signal_array.append(v3fitInputs.sxr_data[sig][idx])
+                #sigma_array.append(v3fitInputs.sdo_sigma_a[sig)][idx])
+            self.addDoubleArray1D(self.formatTo1Drange(
+                                        'sdo_data_a',nMag+1,nMag+nSXR),
+                                  signal_array)
+            # self.addDoubleArray1D(self.formatTo1Drange(
+            #         'sdo_sigma_a',nMag+1,nMag+nSXR),sigma_array)
+        if nInt > 0:
+            signal_array=[]
+            #sigma_array=[]
+            if debug: 
+                print('ipch_filename',v3fitInputs.int_file)
+                print('int data',v3fitInputs.sdo_data_a)
+                print('sdo_sigma_a',v3fitInputs.sdo_sigma_a)
+            self.addString('ipch_dot_filename',v3fitInputs.int_file)
+            for sig in range(nInt):
+                signal_array.append(v3fitInputs.int_data[sig][idx])
+               # sigma_array.append(v3fitInputs.sdo_sigma_a[sig)][idx])
+            if debug: print('int data',signal_array)
+            self.addDoubleArray1D(self.formatTo1Drange(
+                    'sdo_data_a',nMag+nSXR+1,nMag+nSXR+nInt),signal_array)
+            # self.addDoubleArray1D(self.formatTo1Drange(
+            #         'sdo_sigma_a',nMag+nSXR+1,nMag+nSXR+nInt),sigma_array)
+        idxt=0
         for signal in v3fitInputs.signalNames:
             print('in writeV3FITReconSignals - signal is',signal)
             if signal.lower() == 'Bar Limiter'.lower():
-                self.writeV3FITBarLimiterSignal(v3fitInputs,idx)
+                self.writeV3FITBarLimiterSignal(v3fitInputs,idxt)
+                idxt+=1
             elif signal.lower() == 'Circular Limiter'.lower():
-                self.writeV3FITCircularLimiterSignal(v3fitInputs,idx)
+                self.writeV3FITCircularLimiterSignal(v3fitInputs,idxt)
+                idxt+=1
             else:
                 print('in writeV3FITReconSignals - signal is',signal)
-            idx+=1
+
         # handle combinations of signals
-        idx=0
+        idx=1
         for coosigs in v3fitInputs.coosig_name:
             self.writeCombinationOfSignals(v3fitInputs,idx)
     
     
-    def writeV3FITParameters(self,v3fitInputs):
+    def writeV3FITParameters(self,v3fitInputs,idx):
         self.writeV3FITControls(v3fitInputs)
         self.writeV3FITModels(v3fitInputs)
         self.writeV3FITDerivedParameters(v3fitInputs)
-        self.writeV3FITReconParameters(v3fitInputs)
-        self.writeV3FITReconSignals(v3fitInputs)
+        debug=True
+        self.writeV3FITReconParameters(v3fitInputs,debug)
+        self.writeV3FITReconSignals(v3fitInputs,idx,debug)
         self.writeTotalSignals(v3fitInputs)
         
 # -------------------------------------------------------------------------

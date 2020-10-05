@@ -15,7 +15,7 @@ rp_types=["ac","ac_aux_s","ac_aux_f",\
          "bloat","extcut","curtor","phiedge","pres_scale", \
          "rbc", "rbs", "zbc", "zbs", \
          "density_max","density_tau", \
-         "pp_ne_b", "pp_ne_as","pp_ne_nf" \
+         "pp_ne_b", "pp_ne_as","pp_ne_af", \
          "pp_sxrem_b_a","pp_sxrem_af_a", \
          "pp_te_b","pp_te_as","pp_te_af", \
          "ac_edge","am_edge","phi_offset", "z_offset"]
@@ -67,6 +67,7 @@ class V3FITData(object):
 
     # derived parameters
         self.n_dp = 0
+        self.dp_type=''
     
     # reconstruction parameters
         self.n_rp = 0
@@ -80,10 +81,18 @@ class V3FITData(object):
    
     #   counters and names
         self.n_signals = 0
-        self.mag_signals = 0
-        self.sxr_signals = 0
-        self.int_signals = 0
+        self.n_mag_signals = 0
+        self.n_sxr_signals = 0
+        self.n_int_signals = 0
+        # signalNames may be magnetic,sxr,int,bar_limiter,circular_limiter
+        # coosig
         self.signalNames=[]
+    
+    # signals
+        self.sdo_data_a=[]
+        self.magnetic_data=[]
+        self.sxr_data=[]
+        self.int_data=[]
         
     # signal weights
         self.sdo_w_spec_weight =[]
@@ -95,6 +104,7 @@ class V3FITData(object):
         self.sdo_s_spec_fraction =[] 
         self.sdo_s_spec_imin=[]
         self.sdo_s_spec_imax=[]
+        self.sdo_sigma_a=[]
 
         self.coosig_type =[]
         self.coosig_indices =[]
@@ -129,11 +139,11 @@ class V3FITData(object):
         self.num_sxrem_p = 0
         self.pp_sxrem_p_types=['two_power','power_series','akima_spline',
                           'cubic_spline','line_segment','two_power_gs']
-        self.model_sxrem_type_a=["two_power"]
-        self.pp_sxrem_as_a=[]
-        self.pp_sxrem_af_a=[]
-        self.pp_sxrem_ptype_a=[]
-        self.pp_sxrem_b_a=[]
+        self.model_sxrem_type=["two_power"]
+        self.pp_sxrem_as=[]
+        self.pp_sxrem_af=[]
+        self.pp_sxrem_ptype=[]
+        self.pp_sxrem_b=[]
     
    # Interferometer information
         self.ne_pp_unit=0.0
@@ -144,7 +154,7 @@ class V3FITData(object):
         self.pp_ne_b=[]
         self.pp_ne_as=[]
         self.pp_ne_af=[]
-        self.ipch_dot_file=''
+        self.int_file=''
     
    # Thomson Scattering information     
     
@@ -190,7 +200,7 @@ class V3FITData(object):
     def V3FITmoveToClass2(self,shot,parsedLine,shotData,dataNames,debug):
         if debug:
             print("==========================================================")
-            print("in V3FITmoveToClass")
+            print("in V3FITmoveToClass2")
             print(parsedLine)
         # remove 'class'
         removeItems=['class','v3fit_data']
@@ -198,12 +208,23 @@ class V3FITData(object):
             while item in parsedLine: parsedLine.remove(item)
         
         if debug: print(parsedLine)
-        
+        inMagSig=False
+        inSXRSig=False
+        inIntSig=False
         for v in parsedLine:
             if debug: 
                 print("")
                 print ("In V3FITmoveToClass2 - searching for data name:",v)
-            if v in dataNames:
+            if v=='magnetic_diagnostic':
+                inMagSig=True
+            elif v=='sxr_diagnostic':
+                inMagSig=False
+                inSXRSig=True
+            elif v=='int_diagnostic':
+                inSXRSig=False
+                inIntSig=True
+            
+            elif v in dataNames:
                 idx=dataNames.index(v)
                 if debug:
                     print("found data %s at %d of %d" % (v,idx,len(shotData)))
@@ -212,20 +233,31 @@ class V3FITData(object):
                 if type(data.getData()) is str:
                     setattr(self,v,data.getData())
                 else:
-                    if type(data) is list:
-                        if debug: print(" this is a list of length",len(data))
-                        averageDataArray=[]
-                        for item in data:
-                            averageData=findAverageValues(item,shot)
-                            averageDataArray+=[averageData]
-                    else:
-                        averageData=findAverageValues(data,shot)
-                    setattr(self,v,averageData)
+                    averageData=findAverageValues(data,shot)
+                    self.n_signals+=1
+                    if inMagSig: 
+                        self.magnetic_data.append(averageData)
+                        self.n_mag_signals+=1
+                        self.sdo_data_a.append(averageData)
+                        self.signalNames.append('magnetic')
+                        self.n_signals+=1
+                    elif inSXRSig:
+                        self.sxr_data.append(averageData)
+                        self.n_sxr_signals+=1
+                        self.sdo_data_a.append(averageData)
+                        self.signalNames.append('sxr')
+                        self.n_signals+=1
+                    elif inIntSig: 
+                        self.int_data.append(averageData)
+                        self.n_int_signals+=1
+                        self.sdo_data_a.append(averageData)
+                        self.signalNames.append('int')
+                        self.n_signals+=1
+                        
+                        
                 
             else:
-                print("In V3FITmoveToClass, no data found for ",v)
-            
-            
+                print("In V3FITmoveToClass2, no data found for ",v)
             
     
 #-----------------------------------------------------------------------------
