@@ -15,6 +15,7 @@ Created on Tue Jun 23 11:14:46 2020
 
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
 from matplotlib import cm
 from vmec import wout_file
 from vmec import get_fluxsurfaces
@@ -61,8 +62,8 @@ test=wout_file(file)
 # plt.show()
 
 # make a vacuum vessel
-nphi=2000
-ntheta=2000
+nphi=200
+ntheta=200
 Ro=0.75
 avv=0.3
 phiarr=np.arange(nphi)/(nphi-1)*2.0*np.pi
@@ -90,8 +91,10 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 
 surf=ax.plot_surface(xarr,yarr,z,
-                 cmap=cm.coolwarm,linewidth=0) # , #antialiased=False,
-
+                     color='gray',
+                     linewidth=0) # , #antialiased=False,
+ax.autoscale(enable=False)
+ax.set_alpha(.5)
 plt.show()
 # aspect_ratio=1,aspect_z=1, $
 # color='gray', $
