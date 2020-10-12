@@ -86,7 +86,7 @@ def plotParameters(folder):
                          ecolor='gray',elinewidth=.7)
             plt.xlabel('time(s)')
             plt.ylabel('$\Phi_{edge}$')
-            plt.ylim(min(value[pdx,:])*.9,max(value[pdx,:])*1.1)
+            #plt.ylim(min(value[pdx,:])*1.1,max(value[pdx,:])*1.1)
             #plt.legend()
             plt.show()
         elif name=='pp_ne_af':
@@ -119,9 +119,13 @@ def recon_synopsis(file):
     print('parameter sigma',result.param_sigma)
 
     
-folder=r'C:\Users\hartwgj\Documents\Reconstructions\shot_20090173\20090173b'
-# files=getResultFiles(folder)
-# file=files[0]
-# recon_synopsis(file)
+# folder=r'C:\Users\hartwgj\Documents\Reconstructions\shot_20090173\20090173b'
+# folder=r'C:\Users\hartwgj\Documents\Reconstructions\Nic20072944\20072944'
+# folder=r'C:\Users\hartwgj\Documents\Reconstructions\James20082512\20082512'
+folder=r'C:\Users\hartwgj\Documents\Reconstructions\shot_20090104\20090104'
+# # files=getResultFiles(folder)
+# # file=files[0]
+# # recon_synopsis(file)
 plotChi2(folder)
 plotParameters(folder)
+#result=results_file_contents(r'C:\Users\hartwgj\Desktop\TestReconFilesInt\20090173\result_20090173_1.68_0.nc')

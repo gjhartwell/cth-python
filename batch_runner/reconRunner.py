@@ -121,8 +121,8 @@ reconserver=Server()
 #file=r"C:\Users\hartwgj\Documents\Reconstructions\Nic20072944\batchfile.cthsl"
 file=r'C:\Users\hartwgj\Desktop\TestReconFilesInt\batchfile_phi_int.cthsl'
 file=r'C:\Users\hartwgj\Desktop\TestReconFiles\batchfile2.cthsl'
-reconRunnerMultiProcessor(file,reconserver) 
-# dirnames,allReconStrings=doReconRunner(file,reconserver)
-# rs=allReconStrings[0]
-# dirname=dirnames[0]
-# sendToServer(reconserver,rs,dirname)
+#reconRunnerMultiProcessor(file,reconserver) 
+dirnames,allReconStrings=doReconRunner(file,reconserver)
+rs=allReconStrings[0]
+dirname=dirnames[0]
+sendToServer(reconserver,rs,dirname)

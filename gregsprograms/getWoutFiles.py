@@ -8,8 +8,10 @@ Created on Mon Aug 24 12:34:53 2020
 import glob
 from os.path import join
 from vmec import wout_file
-from vmec import get_maxR
+from vmec import get_maxR,get_fluxsurfaces,get_iotabar
 import matplotlib.pyplot as plt
+import numpy as np
+
 def getWoutFiles(folder):
     path=join(folder,'wout_*.nc')
     files=glob.glob(path)
@@ -66,6 +68,78 @@ def plotrRmax(folder,phi):
     plt.show()   
     print('maximum Rmax',max(Rmax))
 
+def get_Zmax(wout):
+    nphi=360
+    ntheta=200
+    
+    phimin=36.0  # in degrees
+    phimax=72.0
+    
+    phiarr=np.linspace(phimin,phimax,nphi+1)
+    Zmaxtemp=[]
+    rzmt=[]
+    for phi in phiarr:
+        R,Z=get_fluxsurfaces(wout,ntheta,phi)
+        zmt=max(Z[-1])
+        Zmaxtemp.append(zmt)
+        thetam=np.argmax(zmt)
+        rmt=R[thetam][-1]
+        rzmt.append(rmt)
+    
+    Zmax=np.max(Zmaxtemp)
+    idx=np.argmax(Zmaxtemp)
+    phimax=phiarr[idx]
+    RatZmax=rzmt[idx]
+    #print(phimax,Zmax,RatZmax)
+    return Zmax,phimax,RatZmax
+    
+
+def plotZmax(folder):
+    files=getWoutFiles(folder)
+    Zmax=[]
+    phimax=[]
+    Rmax=[]
+    time=[]
+    for idx,f in enumerate(files):
+        print('file',idx,'of',len(files))
+        wout=wout_file(f)
+        Z,phi,R=get_Zmax(wout)
+        Zmax.append(Z)
+        phimax.append(phi)
+        Rmax.append(R)
+        time.append(float(timeFromWoutFile(f)))
+        
+    shot=shotFromFile(files[0])   
+
+# plot Zmax    
+    plt.plot(time,Zmax,color='b',label='$Z_{maximum}$',
+                            linestyle='',marker='o',markersize=3)
+    plt.title('shot '+str(shot))
+    plt.xlabel('time(s)')
+    plt.ylabel('$Z_{max} (m)$')
+    plt.legend()
+    plt.show()  
+
+#plot phi at Zmax
+    plt.plot(time,phimax,color='b',label='$\Phi$ at $Z_{maximum}$',
+                            linestyle='',marker='o',markersize=3)
+    plt.title('shot '+str(shot))
+    plt.xlabel('time(s)')
+    plt.ylabel('$\Phi_{max}(deg)$')
+    plt.legend()
+    plt.show()  
+    
+# plot R at Zmax    
+    plt.plot(time,Rmax,color='b',label='R at $Z_{maximum}$',
+                            linestyle='',marker='o',markersize=3)
+    plt.title('shot '+str(shot))
+    plt.xlabel('time(s)')
+    plt.ylabel('R at $Z_{max}(m)$')
+    plt.legend()
+    plt.show() 
+    
+    
+
 def plotRmaxAndRmajor(folder,phi):
     files=getWoutFiles(folder)
     rmajor=[]
@@ -87,9 +161,7 @@ def plotRmaxAndRmajor(folder,phi):
     plt.xlabel('time(s)')
     plt.ylabel('R (m)')
     plt.legend()
-    plt.show()    
-    
-    
+    plt.show()     
     
 def plotIotas(folder):
     files=getWoutFiles(folder)
@@ -136,9 +208,13 @@ def plotPhiEdge(folder):
     
     
 folder=r'C:\Users\hartwgj\Documents\Reconstructions\Nic20072944\20072944'
+folder=r'C:\Users\hartwgj\Documents\Reconstructions\James20082512\20082512'
+folder=r'C:\Users\hartwgj\Desktop\TestReconFilesInt\20090173'
+#folder=r'C:\Users\hartwgj\Desktop\TestReconFiles\20032705'
 #folder=r'C:\Users\hartwgj\Documents\Reconstructions\shots_200327\shot_20032705\20032705ls'
 #plotrMajor(folder)
-#plotIotas(folder)
+plotIotas(folder)
 #plotPhiEdge(folder)
 #plotrRmax(folder,36)
-plotRmaxAndRmajor(folder,36)
+#plotRmaxAndRmajor(folder,36)
+#plotZmax(folder)

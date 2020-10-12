@@ -187,9 +187,8 @@ def get_maxR(wout, phi):
         
        
         Rmax = sum(wout.rmnc[ns-1] * np.cos(xm * theta - xn * phi))
-              
-                
         return Rmax
+    
 
 def get_iotabar(woutdata):
     # gets the rotational transform information from the wout file
